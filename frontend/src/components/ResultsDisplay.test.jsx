@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import ResultsDisplay from './ResultsDisplay'
 
 const mockResults = {
@@ -124,5 +124,97 @@ describe('ResultsDisplay', () => {
 
     // Should display the ingredient key as-is
     expect(screen.getByText('unknown_spirit')).toBeInTheDocument()
+  })
+
+  describe('Simplify measurements toggle', () => {
+    it('renders toggle and is inactive by default', () => {
+      render(<ResultsDisplay results={mockResults} unit="ml" />)
+
+      const toggle = screen.getByRole('button', { name: /simplify measurements/i })
+      expect(toggle).toBeInTheDocument()
+      expect(toggle).not.toHaveClass('active')
+    })
+
+    it('activates toggle when clicked', () => {
+      render(<ResultsDisplay results={mockResults} unit="ml" />)
+
+      const toggle = screen.getByRole('button', { name: /simplify measurements/i })
+      fireEvent.click(toggle)
+      expect(toggle).toHaveClass('active')
+    })
+
+    it('displays simplified values when toggle is active', () => {
+      render(<ResultsDisplay results={mockResults} unit="ml" />)
+
+      // Before toggle: shows exact value 68.5 ml for water
+      expect(screen.getByText('68.5 ml')).toBeInTheDocument()
+
+      const toggle = screen.getByRole('button', { name: /simplify measurements/i })
+      fireEvent.click(toggle)
+
+      // After toggle: shows rounded value 70 ml
+      expect(screen.getByText('70 ml')).toBeInTheDocument()
+      expect(screen.queryByText('68.5 ml')).not.toBeInTheDocument()
+    })
+
+    it('hides secondary units when simplified', () => {
+      render(<ResultsDisplay results={mockResults} unit="ml" />)
+
+      // Before toggle: secondary amounts are visible
+      expect(screen.getByText('2.32 oz')).toBeInTheDocument()
+
+      const toggle = screen.getByRole('button', { name: /simplify measurements/i })
+      fireEvent.click(toggle)
+
+      // After toggle: no secondary amounts
+      expect(screen.queryByText('2.32 oz')).not.toBeInTheDocument()
+    })
+
+    it('shows hint text when toggle is active', () => {
+      render(<ResultsDisplay results={mockResults} unit="ml" />)
+
+      expect(screen.queryByText(/rounded for easier measuring/i)).not.toBeInTheDocument()
+
+      const toggle = screen.getByRole('button', { name: /simplify measurements/i })
+      fireEvent.click(toggle)
+
+      expect(screen.getByText(/rounded for easier measuring/i)).toBeInTheDocument()
+    })
+
+    it('shows small amounts as dashes when simplified', () => {
+      const resultsWithBitters = {
+        ...mockResults,
+        ingredients: {
+          gin: 545.2,
+          angostura: 2.5,
+        },
+        ingredients_oz: {
+          gin: 18.43,
+          angostura: 0.08,
+        },
+      }
+
+      render(<ResultsDisplay results={resultsWithBitters} unit="ml" />)
+
+      const toggle = screen.getByRole('button', { name: /simplify measurements/i })
+      fireEvent.click(toggle)
+
+      expect(screen.getByText('3 dashes')).toBeInTheDocument()
+    })
+
+    it('can toggle off to restore exact values', () => {
+      render(<ResultsDisplay results={mockResults} unit="ml" />)
+
+      const toggle = screen.getByRole('button', { name: /simplify measurements/i })
+
+      // Toggle on
+      fireEvent.click(toggle)
+      expect(screen.getByText('70 ml')).toBeInTheDocument()
+
+      // Toggle off
+      fireEvent.click(toggle)
+      expect(screen.getByText('68.5 ml')).toBeInTheDocument()
+      expect(screen.queryByText('70 ml')).not.toBeInTheDocument()
+    })
   })
 })

@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { formatSimplifiedAmount } from '../utils/simplifyMeasurements'
+
 const SPIRIT_LABELS = {
   gin: 'Gin',
   vodka: 'Vodka',
@@ -13,6 +16,8 @@ const SPIRIT_LABELS = {
 };
 
 export default function ResultsDisplay({ results, unit }) {
+  const [simplified, setSimplified] = useState(false)
+
   if (!results) return null;
 
   const {
@@ -33,6 +38,13 @@ export default function ResultsDisplay({ results, unit }) {
   const showOzFirst = unit === 'oz';
 
   const formatAmount = (ml, oz) => {
+    if (simplified) {
+      return (
+        <span className="primary-amount">
+          {formatSimplifiedAmount(ml, oz, showOzFirst)}
+        </span>
+      );
+    }
     if (showOzFirst) {
       return (
         <>
@@ -53,6 +65,18 @@ export default function ResultsDisplay({ results, unit }) {
     <div className="card results">
       <h2>{cocktail_name}</h2>
       <p className="subtitle">{variation_name} - Freezer Batch</p>
+
+      <div className="simplify-toggle">
+        <button
+          className={`toggle-btn${simplified ? ' active' : ''}`}
+          onClick={() => setSimplified(!simplified)}
+        >
+          Simplify measurements
+        </button>
+        {simplified && (
+          <span className="toggle-hint">Rounded for easier measuring</span>
+        )}
+      </div>
 
       <ul className="ingredients-list">
         {Object.entries(ingredients).map(([ingredient, ml]) => (
