@@ -1,15 +1,19 @@
 const DEFAULT_PRESETS = {
   mild: { name: 'Mild', abv: 22 },
-  normal: { name: 'Normal', abv: 24 },
+  classic: { name: 'Classic', abv: 24 },
   strong: { name: 'Strong', abv: 26 },
 };
 
+const PRESET_ORDER = ['mild', 'classic', 'strong'];
+
 export default function ABVSelector({ targetABV, onABVChange, presets }) {
   const activePresets = presets && Object.keys(presets).length > 0 ? presets : DEFAULT_PRESETS;
-  const presetList = Object.entries(activePresets).map(([id, preset]) => ({
-    id,
-    ...preset
-  }));
+  const presetList = PRESET_ORDER
+    .filter(id => activePresets[id])
+    .map(id => ({
+      id,
+      ...activePresets[id]
+    }));
 
   const maxABV = Math.max(35, ...presetList.map(p => p.abv));
 

@@ -44,7 +44,7 @@ function Calculator() {
         if (cocktailId && cocktailData.some(c => c.id === cocktailId)) {
           setSelectedCocktail(cocktailId);
           const cocktail = cocktailData.find(c => c.id === cocktailId);
-          if (cocktail?.presets?.normal) {
+          if (cocktail?.presets?.classic) {
             setTargetABV(cocktail.presets.normal.abv);
           }
         }
@@ -93,7 +93,7 @@ function Calculator() {
     setResults(null);
     // Set default ABV to the cocktail's "normal" preset
     const cocktail = cocktails.find(c => c.id === cocktailId);
-    if (cocktail?.presets?.normal) {
+    if (cocktail?.presets?.classic) {
       setTargetABV(cocktail.presets.normal.abv);
     }
     // Update URL to reflect selection

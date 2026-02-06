@@ -5,7 +5,7 @@ import ABVSelector from './ABVSelector'
 describe('ABVSelector', () => {
   const defaultPresets = {
     mild: { name: 'Mild', abv: 22 },
-    normal: { name: 'Normal', abv: 24 },
+    classic: { name: 'Classic', abv: 24 },
     strong: { name: 'Strong', abv: 26 },
   }
 
@@ -20,7 +20,7 @@ describe('ABVSelector', () => {
 
     expect(screen.getByText('Target ABV')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Mild \(22%\)/ })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Normal \(24%\)/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Classic \(24%\)/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Strong \(26%\)/ })).toBeInTheDocument()
   })
 
@@ -33,8 +33,8 @@ describe('ABVSelector', () => {
       />
     )
 
-    const normalButton = screen.getByRole('button', { name: /Normal \(24%\)/ })
-    expect(normalButton).toHaveClass('active')
+    const classicButton = screen.getByRole('button', { name: /Classic \(24%\)/ })
+    expect(classicButton).toHaveClass('active')
   })
 
   it('calls onABVChange when preset clicked', () => {
@@ -94,7 +94,7 @@ describe('ABVSelector', () => {
 
     // Should show default presets
     expect(screen.getByRole('button', { name: /Mild \(22%\)/ })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Normal \(24%\)/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Classic \(24%\)/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Strong \(26%\)/ })).toBeInTheDocument()
   })
 
@@ -108,12 +108,12 @@ describe('ABVSelector', () => {
     )
 
     // Should show default presets
-    expect(screen.getByRole('button', { name: /Normal \(24%\)/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Classic \(24%\)/ })).toBeInTheDocument()
   })
 
   it('sets slider max based on highest preset ABV', () => {
     const customPresets = {
-      normal: { name: 'Normal', abv: 24 },
+      classic: { name: 'Classic', abv: 24 },
       very_strong: { name: 'Very Strong', abv: 30 },
     }
 
