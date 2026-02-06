@@ -17,6 +17,7 @@ function App() {
   const [selectedSpirits, setSelectedSpirits] = useState({});
   const [volume, setVolume] = useState(750);
   const [unit, setUnit] = useState('ml');
+  const [volumeMode, setVolumeMode] = useState('volume');
   const [targetABV, setTargetABV] = useState(24);
 
   const [results, setResults] = useState(null);
@@ -171,6 +172,9 @@ function App() {
         unit={unit}
         onVolumeChange={setVolume}
         onUnitChange={setUnit}
+        servingSizeMl={selectedCocktailData?.serving_size_ml}
+        mode={volumeMode}
+        onModeChange={setVolumeMode}
       />
 
       <ABVSelector
@@ -187,7 +191,7 @@ function App() {
         {calculating ? 'Calculating...' : 'Calculate Recipe'}
       </button>
 
-      <ResultsDisplay results={results} />
+      <ResultsDisplay results={results} unit={unit} />
     </div>
   );
 }

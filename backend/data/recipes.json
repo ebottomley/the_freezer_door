@@ -2,6 +2,7 @@
   "martini": {
     "name": "Martini",
     "base_spirit": "gin",
+    "serving_size_ml": 90,
     "presets": {
       "mild": {"name": "Mild", "abv": 28},
       "normal": {"name": "Normal", "abv": 30},
@@ -9,24 +10,31 @@
     },
     "variations": {
       "classic": {
-        "name": "Classic",
+        "name": "Classic (4:1)",
+        "ingredients": {
+          "gin": 2.4,
+          "vermouth_dry": 0.6
+        }
+      },
+      "dry": {
+        "name": "Dry (5:1)",
         "ingredients": {
           "gin": 2.5,
           "vermouth_dry": 0.5
         }
       },
-      "dry": {
-        "name": "Dry",
-        "ingredients": {
-          "gin": 2.75,
-          "vermouth_dry": 0.25
-        }
-      },
       "wet": {
-        "name": "Wet",
+        "name": "Wet (2:1)",
         "ingredients": {
           "gin": 2,
           "vermouth_dry": 1
+        }
+      },
+      "fifty_fifty": {
+        "name": "Fifty-Fifty (1:1)",
+        "ingredients": {
+          "gin": 1.5,
+          "vermouth_dry": 1.5
         }
       },
       "dirty": {
@@ -50,6 +58,7 @@
   "manhattan": {
     "name": "Manhattan",
     "base_spirit": "rye",
+    "serving_size_ml": 90,
     "presets": {
       "mild": {"name": "Mild", "abv": 22},
       "normal": {"name": "Normal", "abv": 24},
@@ -95,6 +104,7 @@
   "old_fashioned": {
     "name": "Old Fashioned",
     "base_spirit": "bourbon",
+    "serving_size_ml": 75,
     "presets": {
       "mild": {"name": "Mild", "abv": 22},
       "normal": {"name": "Normal", "abv": 24},
@@ -123,6 +133,7 @@
   "negroni": {
     "name": "Negroni",
     "base_spirit": "gin",
+    "serving_size_ml": 90,
     "presets": {
       "mild": {"name": "Mild", "abv": 22},
       "normal": {"name": "Normal", "abv": 24},

@@ -12,7 +12,7 @@ const SPIRIT_LABELS = {
   olive_brine: 'Olive Brine'
 };
 
-export default function ResultsDisplay({ results }) {
+export default function ResultsDisplay({ results, unit }) {
   if (!results) return null;
 
   const {
@@ -30,6 +30,25 @@ export default function ResultsDisplay({ results }) {
     garnish
   } = results;
 
+  const showOzFirst = unit === 'oz';
+
+  const formatAmount = (ml, oz) => {
+    if (showOzFirst) {
+      return (
+        <>
+          <span className="primary-amount">{oz} oz</span>
+          <span className="secondary-amount">{ml} ml</span>
+        </>
+      );
+    }
+    return (
+      <>
+        <span className="primary-amount">{ml} ml</span>
+        <span className="secondary-amount">{oz} oz</span>
+      </>
+    );
+  };
+
   return (
     <div className="card results">
       <h2>{cocktail_name}</h2>
@@ -45,8 +64,7 @@ export default function ResultsDisplay({ results }) {
               )}
             </div>
             <div className="ingredient-amount">
-              <span className="ml">{ml} ml</span>
-              <span className="oz">{ingredients_oz[ingredient]} oz</span>
+              {formatAmount(ml, ingredients_oz[ingredient])}
             </div>
           </li>
         ))}
@@ -54,8 +72,7 @@ export default function ResultsDisplay({ results }) {
         <li className="ingredient-item water-highlight">
           <div className="ingredient-name">Water (for dilution)</div>
           <div className="ingredient-amount">
-            <span className="ml">{water_ml} ml</span>
-            <span className="oz">{water_oz} oz</span>
+            {formatAmount(water_ml, water_oz)}
           </div>
         </li>
       </ul>
@@ -70,7 +87,9 @@ export default function ResultsDisplay({ results }) {
           <div className="stat-label">Final ABV</div>
         </div>
         <div className="stat">
-          <div className="stat-value">{total_volume_ml} ml</div>
+          <div className="stat-value">
+            {showOzFirst ? `${total_volume_oz} oz` : `${total_volume_ml} ml`}
+          </div>
           <div className="stat-label">Total Volume</div>
         </div>
       </div>

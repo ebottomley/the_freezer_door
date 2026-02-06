@@ -38,7 +38,8 @@ def get_cocktails():
             "name": cocktail["name"],
             "variations": variations,
             "garnish": cocktail.get("garnish", ""),
-            "presets": cocktail.get("presets", {})
+            "presets": cocktail.get("presets", {}),
+            "serving_size_ml": cocktail.get("serving_size_ml", 90)
         })
 
     return jsonify(cocktails)
