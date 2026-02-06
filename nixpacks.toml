@@ -1,10 +1,10 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "python312"]
+nixPkgs = ["nodejs_20", "python312", "python312Packages.pip"]
 
 [phases.install]
 cmds = [
     "cd frontend && npm ci",
-    "cd backend && pip install -r requirements.txt"
+    "cd backend && python3 -m pip install -r requirements.txt --target=/app/backend/vendor"
 ]
 
 [phases.build]
@@ -14,4 +14,4 @@ cmds = [
 ]
 
 [start]
-cmd = "cd backend && gunicorn app:app"
+cmd = "cd backend && PYTHONPATH=/app/backend/vendor gunicorn app:app"
