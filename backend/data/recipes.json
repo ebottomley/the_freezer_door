@@ -2,6 +2,11 @@
   "martini": {
     "name": "Martini",
     "base_spirit": "gin",
+    "presets": {
+      "mild": {"name": "Mild", "abv": 28},
+      "normal": {"name": "Normal", "abv": 30},
+      "strong": {"name": "Strong", "abv": 32}
+    },
     "variations": {
       "classic": {
         "name": "Classic",
@@ -45,6 +50,11 @@
   "manhattan": {
     "name": "Manhattan",
     "base_spirit": "rye",
+    "presets": {
+      "mild": {"name": "Mild", "abv": 22},
+      "normal": {"name": "Normal", "abv": 24},
+      "strong": {"name": "Strong", "abv": 26}
+    },
     "variations": {
       "classic": {
         "name": "Classic (Rye)",
@@ -85,6 +95,11 @@
   "old_fashioned": {
     "name": "Old Fashioned",
     "base_spirit": "bourbon",
+    "presets": {
+      "mild": {"name": "Mild", "abv": 22},
+      "normal": {"name": "Normal", "abv": 24},
+      "strong": {"name": "Strong", "abv": 26}
+    },
     "variations": {
       "bourbon": {
         "name": "Bourbon Old Fashioned",
@@ -108,6 +123,11 @@
   "negroni": {
     "name": "Negroni",
     "base_spirit": "gin",
+    "presets": {
+      "mild": {"name": "Mild", "abv": 22},
+      "normal": {"name": "Normal", "abv": 24},
+      "strong": {"name": "Strong", "abv": 26}
+    },
     "variations": {
       "classic": {
         "name": "Classic",

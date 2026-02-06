@@ -1,9 +1,17 @@
-export default function ABVSelector({ targetABV, onABVChange }) {
-  const presets = [
-    { id: 'weak', name: 'Weak', abv: 22 },
-    { id: 'normal', name: 'Normal', abv: 24 },
-    { id: 'strong', name: 'Strong', abv: 26 },
-  ];
+const DEFAULT_PRESETS = {
+  mild: { name: 'Mild', abv: 22 },
+  normal: { name: 'Normal', abv: 24 },
+  strong: { name: 'Strong', abv: 26 },
+};
+
+export default function ABVSelector({ targetABV, onABVChange, presets }) {
+  const activePresets = presets && Object.keys(presets).length > 0 ? presets : DEFAULT_PRESETS;
+  const presetList = Object.entries(activePresets).map(([id, preset]) => ({
+    id,
+    ...preset
+  }));
+
+  const maxABV = Math.max(35, ...presetList.map(p => p.abv));
 
   return (
     <div className="card">
@@ -11,7 +19,7 @@ export default function ABVSelector({ targetABV, onABVChange }) {
       <div className="form-group">
         <label>Strength Presets</label>
         <div className="preset-buttons">
-          {presets.map(preset => (
+          {presetList.map(preset => (
             <button
               key={preset.id}
               className={`preset-btn ${targetABV === preset.abv ? 'active' : ''}`}
@@ -27,7 +35,7 @@ export default function ABVSelector({ targetABV, onABVChange }) {
         <input
           type="range"
           min="18"
-          max="30"
+          max={maxABV}
           step="0.5"
           value={targetABV}
           onChange={(e) => onABVChange(parseFloat(e.target.value))}

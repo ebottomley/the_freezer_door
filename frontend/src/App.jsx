@@ -84,7 +84,14 @@ function App() {
     setSelectedCocktail(cocktailId);
     setSelectedVariation('');
     setResults(null);
+    // Set default ABV to the cocktail's "normal" preset
+    const cocktail = cocktails.find(c => c.id === cocktailId);
+    if (cocktail?.presets?.normal) {
+      setTargetABV(cocktail.presets.normal.abv);
+    }
   };
+
+  const selectedCocktailData = cocktails.find(c => c.id === selectedCocktail);
 
   const handleVariationChange = (variationId) => {
     setSelectedVariation(variationId);
@@ -169,6 +176,7 @@ function App() {
       <ABVSelector
         targetABV={targetABV}
         onABVChange={setTargetABV}
+        presets={selectedCocktailData?.presets}
       />
 
       <button
