@@ -15,7 +15,7 @@ const SPIRIT_LABELS = {
   olive_brine: 'Olive Brine'
 };
 
-export default function ResultsDisplay({ results, unit }) {
+export default function ResultsDisplay({ results, unit, servingSizeMl }) {
   const [simplified, setSimplified] = useState(false)
 
   if (!results) return null;
@@ -116,6 +116,14 @@ export default function ResultsDisplay({ results, unit }) {
           </div>
           <div className="stat-label">Total Volume</div>
         </div>
+        {servingSizeMl && (
+          <div className="stat">
+            <div className="stat-value">
+              {Math.floor(total_volume_ml / servingSizeMl)}
+            </div>
+            <div className="stat-label">Drinks</div>
+          </div>
+        )}
       </div>
 
       {garnish && (

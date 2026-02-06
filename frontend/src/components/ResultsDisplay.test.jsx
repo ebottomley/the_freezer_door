@@ -108,6 +108,20 @@ describe('ResultsDisplay', () => {
     expect(screen.getByText('Total Volume')).toBeInTheDocument()
   })
 
+  it('displays number of drinks when servingSizeMl provided', () => {
+    render(<ResultsDisplay results={mockResults} unit="ml" servingSizeMl={90} />)
+
+    // 750ml / 90ml = 8.33, should round to 8
+    expect(screen.getByText('8')).toBeInTheDocument()
+    expect(screen.getByText('Drinks')).toBeInTheDocument()
+  })
+
+  it('does not display drinks stat when servingSizeMl not provided', () => {
+    render(<ResultsDisplay results={mockResults} unit="ml" />)
+
+    expect(screen.queryByText('Drinks')).not.toBeInTheDocument()
+  })
+
   it('handles unknown ingredient types gracefully', () => {
     const resultsWithUnknown = {
       ...mockResults,

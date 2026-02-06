@@ -224,7 +224,7 @@ function Calculator() {
           {calculating ? 'Calculating...' : 'Calculate Recipe'}
         </button>
 
-        <ResultsDisplay results={results} unit={unit} />
+        <ResultsDisplay results={results} unit={unit} servingSizeMl={selectedCocktailData?.serving_size_ml} />
       </div>
     </div>
   );
