@@ -16,18 +16,46 @@ the_freezer_door/
 │       └── integration/  # API endpoint tests
 └── frontend/          # React (Vite) application
     ├── src/
-    │   ├── components/  # React components (with colocated *.test.jsx)
+    │   ├── components/
+    │   │   ├── Calculator/     # Main calculator form
+    │   │   ├── CocktailCard/   # Clickable cocktail cards
+    │   │   ├── CocktailIcon/   # SVG icons for each cocktail
+    │   │   ├── Header/         # Site header with back nav
+    │   │   ├── HomePage/       # Landing page with grid
+    │   │   └── ...             # Form components
     │   └── services/    # API client
     └── e2e/           # Playwright E2E tests
 ```
+
+## Routes
+
+| Route | Component | Description |
+|-------|-----------|-------------|
+| `/` | HomePage | Landing page with cocktail icon grid |
+| `/cocktail/:cocktailId` | Calculator | Recipe calculator, pre-selects cocktail from URL |
+
+## Design System
+
+**Theme: Retrofuturist (SMEG-inspired)**
+- Clean, modern aesthetic with retro rounded shapes
+- Bold cardinal red accent (#C41E3A)
+- Nunito font for logo, Inter for body text
+- Pill-shaped buttons, generous border-radius
+- Light gray background with white cards
+
+**Typography:**
+- Logo: Nunito (900 weight, uppercase, letter-spacing)
+- Body: Inter (400-700 weights)
+- Display: Libre Baskerville (for results headings)
 
 ## Running the Application
 
 ### Backend
 ```bash
 cd backend
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-python app.py
+python3 app.py
 ```
 Runs on http://localhost:5000
 
@@ -90,7 +118,7 @@ This project follows Test-Driven Development (TDD) and web development best prac
 **Backend:**
 ```bash
 cd backend
-python -m venv venv && source venv/bin/activate
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements-dev.txt
 pytest                    # Run all tests
 pytest --cov=services --cov=routes  # With coverage
