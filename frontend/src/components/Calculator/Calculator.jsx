@@ -8,6 +8,13 @@ import ResultsDisplay from '../ResultsDisplay';
 import Header from '../Header/Header';
 import { getCocktails, getSpirits, calculateRecipe } from '../../services/api';
 
+const DEFAULT_VARIATIONS = {
+  martini: 'classic',
+  manhattan: 'classic',
+  old_fashioned: 'bourbon',
+  negroni: 'classic',
+};
+
 function Calculator() {
   const { cocktailId } = useParams();
   const navigate = useNavigate();
@@ -40,12 +47,17 @@ function Calculator() {
         setCocktails(cocktailData);
         setSpirits(spiritData);
 
-        // If we have a cocktailId from the URL, pre-select it
+        // If we have a cocktailId from the URL, pre-select it and its default variation
         if (cocktailId && cocktailData.some(c => c.id === cocktailId)) {
           setSelectedCocktail(cocktailId);
           const cocktail = cocktailData.find(c => c.id === cocktailId);
           if (cocktail?.presets?.classic) {
-            setTargetABV(cocktail.presets.normal.abv);
+            setTargetABV(cocktail.presets.classic.abv);
+          }
+          // Pre-select the default variation for this cocktail
+          const defaultVariation = DEFAULT_VARIATIONS[cocktailId];
+          if (defaultVariation) {
+            setSelectedVariation(defaultVariation);
           }
         }
       } catch (err) {
@@ -89,13 +101,22 @@ function Calculator() {
 
   const handleCocktailChange = (cocktailId) => {
     setSelectedCocktail(cocktailId);
-    setSelectedVariation('');
     setResults(null);
-    // Set default ABV to the cocktail's "normal" preset
+
+    // Set default ABV and variation
     const cocktail = cocktails.find(c => c.id === cocktailId);
     if (cocktail?.presets?.classic) {
-      setTargetABV(cocktail.presets.normal.abv);
+      setTargetABV(cocktail.presets.classic.abv);
     }
+
+    // Pre-select the default variation for this cocktail
+    const defaultVariation = DEFAULT_VARIATIONS[cocktailId];
+    if (defaultVariation) {
+      setSelectedVariation(defaultVariation);
+    } else {
+      setSelectedVariation('');
+    }
+
     // Update URL to reflect selection
     if (cocktailId) {
       navigate(`/cocktail/${cocktailId}`, { replace: true });
