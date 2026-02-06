@@ -5,16 +5,32 @@
 }
 
 :root {
-  --color-bg: #1a1a2e;
-  --color-surface: #16213e;
-  --color-primary: #e94560;
-  --color-secondary: #0f3460;
-  --color-text: #eaeaea;
-  --color-text-muted: #a0a0a0;
-  --color-border: #2a2a4a;
-  --color-success: #4ade80;
-  --font-display: 'Playfair Display', serif;
+  /* Retrofuturist Palette */
+  --color-bg: #F2F2F2;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #FAFAFA;
+  --color-chrome: #E8E8E8;
+  --color-chrome-dark: #D0D0D0;
+  --color-primary: #C41E3A;
+  --color-primary-hover: #A8182F;
+  --color-text: #1A1A1A;
+  --color-text-muted: #777777;
+  --color-border: #E0E0E0;
+  --color-border-strong: #CCCCCC;
+  --color-success: #2E8B57;
+
+  /* Typography */
+  --font-logo: 'Nunito', sans-serif;
+  --font-display: 'Libre Baskerville', serif;
   --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Shadows */
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lift: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition: 0.2s ease;
 }
 
 body {
@@ -23,56 +39,215 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* ========================================
+   Header
+   ======================================== */
+.site-header {
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-border);
+  padding: 1.25rem 1rem;
+}
+
+.header-content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.back-link {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--color-chrome);
+  border: 2px solid var(--color-border-strong);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: all var(--transition);
+}
+
+.back-link:hover {
+  background: var(--color-chrome-dark);
+  border-color: var(--color-text-muted);
+}
+
+.header-title {
+  text-align: center;
+}
+
+.header-title h1 {
+  font-family: var(--font-logo);
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.header-title p {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 0.125rem;
+}
+
+/* ========================================
+   Layout
+   ======================================== */
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-header {
+/* ========================================
+   Homepage
+   ======================================== */
+.home-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.refrigerator-frame {
+  background: var(--color-surface);
+  border: 3px solid var(--color-border-strong);
+  border-radius: 28px;
+  padding: 2.5rem 2rem;
+  box-shadow: var(--shadow-medium);
+}
+
+.shelf-title {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-text-muted);
   margin-bottom: 2rem;
 }
 
-header h1 {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  margin-bottom: 0.5rem;
+.cocktail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 }
 
-header p {
-  color: var(--color-text-muted);
+@media (min-width: 600px) {
+  .cocktail-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
 }
 
-.card {
+/* ========================================
+   Cocktail Cards
+   ======================================== */
+.cocktail-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 1rem 1rem;
+  background: var(--color-surface-alt);
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: all var(--transition);
+}
+
+.cocktail-card:hover {
+  border-color: var(--color-primary);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
 }
 
-.card h2 {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
+.cocktail-card:active {
+  transform: translateY(-1px);
+}
+
+.cocktail-card-icon {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 0.625rem;
+}
+
+.cocktail-icon {
+  width: 100%;
+  height: 100%;
+  color: var(--color-primary);
+}
+
+.cocktail-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cocktail-card-name {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
   color: var(--color-text);
 }
 
+/* ========================================
+   Calculator Page
+   ======================================== */
+.calculator-page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* ========================================
+   Cards
+   ======================================== */
+.card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.card h2 {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 1rem;
+  color: var(--color-text-muted);
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ========================================
+   Form Elements
+   ======================================== */
 .form-group {
   margin-bottom: 1rem;
 }
 
 .form-group label {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--color-text-muted);
+  color: var(--color-text);
 }
 
 .form-row {
@@ -81,27 +256,49 @@ header p {
   gap: 1rem;
 }
 
-select, input[type="number"] {
+select,
+input[type="number"] {
   width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
   font-family: var(--font-body);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
+  font-weight: 500;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border-strong);
+  border-radius: 12px;
   color: var(--color-text);
-  transition: border-color 0.2s;
+  transition: all var(--transition);
+  -webkit-appearance: none;
 }
 
-select:focus, input:focus {
+select:hover,
+input[type="number"]:hover {
+  border-color: var(--color-chrome-dark);
+}
+
+select:focus,
+input:focus {
   outline: none;
   border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.12);
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23777' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
 }
 
 select option {
-  background: var(--color-bg);
+  background: var(--color-surface);
+  color: var(--color-text);
 }
 
+/* ========================================
+   Preset Buttons
+   ======================================== */
 .preset-buttons {
   display: flex;
   gap: 0.5rem;
@@ -110,66 +307,96 @@ select option {
 
 .preset-btn {
   flex: 1;
-  min-width: 100px;
+  min-width: 90px;
   padding: 0.75rem 1rem;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-family: var(--font-body);
-  font-weight: 500;
-  background: var(--color-secondary);
-  border: 2px solid var(--color-border);
-  border-radius: 8px;
+  font-weight: 600;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border-strong);
+  border-radius: 100px;
   color: var(--color-text);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition);
 }
 
 .preset-btn:hover {
-  border-color: var(--color-primary);
+  border-color: var(--color-text-muted);
+  background: var(--color-chrome);
 }
 
 .preset-btn.active {
   background: var(--color-primary);
   border-color: var(--color-primary);
+  color: white;
 }
 
+/* ========================================
+   Calculate Button
+   ======================================== */
 .calculate-btn {
   width: 100%;
-  padding: 1rem;
-  font-size: 1rem;
+  padding: 1rem 2rem;
+  font-size: 0.95rem;
   font-family: var(--font-body);
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   background: var(--color-primary);
   border: none;
-  border-radius: 8px;
+  border-radius: 100px;
   color: white;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all var(--transition);
 }
 
 .calculate-btn:hover {
-  opacity: 0.9;
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-medium);
+}
+
+.calculate-btn:active {
+  transform: translateY(0);
 }
 
 .calculate-btn:disabled {
-  opacity: 0.5;
+  background: var(--color-chrome-dark);
+  color: var(--color-text-muted);
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
+/* ========================================
+   Results Display
+   ======================================== */
 .results {
-  background: linear-gradient(135deg, var(--color-secondary), var(--color-surface));
-  border: 2px solid var(--color-primary);
+  background: var(--color-surface);
+  border: 3px solid var(--color-primary);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .results h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
   color: var(--color-primary);
-  font-size: 1.5rem;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.125rem;
+  text-transform: none;
+  letter-spacing: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .results .subtitle {
   color: var(--color-text-muted);
-  font-size: 0.875rem;
-  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .ingredients-list {
@@ -189,33 +416,38 @@ select option {
 }
 
 .ingredient-name {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--color-text);
 }
 
 .ingredient-brand {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
   color: var(--color-text-muted);
   display: block;
+  margin-top: 0.125rem;
 }
 
 .ingredient-amount {
   text-align: right;
-  font-weight: 600;
 }
 
 .ingredient-amount .primary-amount {
   color: var(--color-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
 .ingredient-amount .secondary-amount {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
   color: var(--color-text-muted);
   display: block;
 }
 
 .serving-info {
   margin-top: 0.75rem;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: var(--color-text-muted);
   text-align: center;
 }
@@ -223,41 +455,53 @@ select option {
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-border);
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--color-border);
 }
 
 .stat {
   text-align: center;
+  padding: 0.875rem 0.5rem;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
 }
 
 .stat-value {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--color-primary);
 }
 
 .stat-label {
-  font-size: 0.75rem;
+  font-size: 0.6rem;
+  font-weight: 700;
   color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.25rem;
 }
 
 .garnish {
   margin-top: 1rem;
-  padding: 0.75rem;
-  background: var(--color-bg);
-  border-radius: 8px;
+  padding: 0.875rem;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
   text-align: center;
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .water-highlight {
-  background: rgba(74, 222, 128, 0.1);
-  border-radius: 8px;
-  padding: 0.25rem 0;
+  background: rgba(46, 139, 87, 0.1);
+  border-radius: 10px;
+  margin: 0 -0.75rem;
+  padding: 0.75rem;
+  border: 1px solid rgba(46, 139, 87, 0.2);
 }
 
 .water-highlight .ingredient-name {
@@ -268,25 +512,40 @@ select option {
   color: var(--color-success);
 }
 
+/* ========================================
+   States
+   ======================================== */
 .loading {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem;
   color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 .error {
-  background: rgba(233, 69, 96, 0.1);
-  border: 1px solid var(--color-primary);
+  background: rgba(196, 30, 58, 0.08);
+  border: 2px solid var(--color-primary);
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 12px;
   color: var(--color-primary);
   text-align: center;
   margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
+/* ========================================
+   Responsive
+   ======================================== */
 @media (max-width: 600px) {
-  header h1 {
-    font-size: 2rem;
+  .header-title h1 {
+    font-size: 1.5rem;
+    letter-spacing: 1.5px;
+  }
+
+  .refrigerator-frame {
+    padding: 1.5rem 1rem;
+    border-radius: 20px;
   }
 
   .form-row {
@@ -302,5 +561,19 @@ select option {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0.75rem 1rem;
+  }
+
+  .stat-label {
+    margin-top: 0;
+  }
+
+  .cocktail-card-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .cocktail-card-name {
+    font-size: 0.75rem;
   }
 }
