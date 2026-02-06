@@ -1,0 +1,131 @@
+{
+  "martini": {
+    "name": "Martini",
+    "base_spirit": "gin",
+    "variations": {
+      "classic": {
+        "name": "Classic",
+        "ingredients": {
+          "gin": 2.5,
+          "vermouth_dry": 0.5
+        }
+      },
+      "dry": {
+        "name": "Dry",
+        "ingredients": {
+          "gin": 2.75,
+          "vermouth_dry": 0.25
+        }
+      },
+      "wet": {
+        "name": "Wet",
+        "ingredients": {
+          "gin": 2,
+          "vermouth_dry": 1
+        }
+      },
+      "dirty": {
+        "name": "Dirty",
+        "ingredients": {
+          "gin": 2.5,
+          "vermouth_dry": 0.5,
+          "olive_brine": 0.5
+        }
+      },
+      "vodka": {
+        "name": "Vodka Martini",
+        "ingredients": {
+          "vodka": 2.5,
+          "vermouth_dry": 0.5
+        }
+      }
+    },
+    "garnish": "Olive or lemon twist"
+  },
+  "manhattan": {
+    "name": "Manhattan",
+    "base_spirit": "rye",
+    "variations": {
+      "classic": {
+        "name": "Classic (Rye)",
+        "ingredients": {
+          "rye": 2,
+          "vermouth_sweet": 1,
+          "angostura": 0.05
+        }
+      },
+      "bourbon": {
+        "name": "Bourbon Manhattan",
+        "ingredients": {
+          "bourbon": 2,
+          "vermouth_sweet": 1,
+          "angostura": 0.05
+        }
+      },
+      "perfect": {
+        "name": "Perfect Manhattan",
+        "ingredients": {
+          "rye": 2,
+          "vermouth_sweet": 0.5,
+          "vermouth_dry": 0.5,
+          "angostura": 0.05
+        }
+      },
+      "dry": {
+        "name": "Dry Manhattan",
+        "ingredients": {
+          "rye": 2,
+          "vermouth_dry": 1,
+          "angostura": 0.05
+        }
+      }
+    },
+    "garnish": "Luxardo cherry"
+  },
+  "old_fashioned": {
+    "name": "Old Fashioned",
+    "base_spirit": "bourbon",
+    "variations": {
+      "bourbon": {
+        "name": "Bourbon Old Fashioned",
+        "ingredients": {
+          "bourbon": 2,
+          "simple_syrup": 0.25,
+          "angostura": 0.05
+        }
+      },
+      "rye": {
+        "name": "Rye Old Fashioned",
+        "ingredients": {
+          "rye": 2,
+          "simple_syrup": 0.25,
+          "angostura": 0.05
+        }
+      }
+    },
+    "garnish": "Orange peel"
+  },
+  "negroni": {
+    "name": "Negroni",
+    "base_spirit": "gin",
+    "variations": {
+      "classic": {
+        "name": "Classic",
+        "ingredients": {
+          "gin": 1,
+          "campari": 1,
+          "vermouth_sweet": 1
+        }
+      },
+      "boulevardier": {
+        "name": "Boulevardier",
+        "ingredients": {
+          "bourbon": 1.5,
+          "campari": 1,
+          "vermouth_sweet": 1
+        }
+      }
+    },
+    "garnish": "Orange peel"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "vodka": [
+    {"brand": "Absolut", "abv": 40},
+    {"brand": "Grey Goose", "abv": 40},
+    {"brand": "Belvedere", "abv": 40},
+    {"brand": "Tito's", "abv": 40},
+    {"brand": "Ketel One", "abv": 40},
+    {"brand": "Stolichnaya", "abv": 40}
+  ],
+  "gin": [
+    {"brand": "Tanqueray", "abv": 47.3},
+    {"brand": "Beefeater", "abv": 44},
+    {"brand": "Bombay Sapphire", "abv": 47},
+    {"brand": "Hendrick's", "abv": 44},
+    {"brand": "Plymouth", "abv": 41.2},
+    {"brand": "Ford's", "abv": 45},
+    {"brand": "The Botanist", "abv": 46}
+  ],
+  "bourbon": [
+    {"brand": "Buffalo Trace", "abv": 45},
+    {"brand": "Maker's Mark", "abv": 45},
+    {"brand": "Woodford Reserve", "abv": 45.2},
+    {"brand": "Wild Turkey 101", "abv": 50.5},
+    {"brand": "Elijah Craig", "abv": 47},
+    {"brand": "Four Roses", "abv": 40},
+    {"brand": "Evan Williams", "abv": 43}
+  ],
+  "rye": [
+    {"brand": "Rittenhouse", "abv": 50},
+    {"brand": "Bulleit Rye", "abv": 45},
+    {"brand": "Old Overholt", "abv": 40},
+    {"brand": "Sazerac", "abv": 45},
+    {"brand": "High West Double Rye", "abv": 46},
+    {"brand": "WhistlePig 6 Year", "abv": 46.5}
+  ],
+  "vermouth_dry": [
+    {"brand": "Dolin Dry", "abv": 17.5},
+    {"brand": "Noilly Prat Extra Dry", "abv": 18},
+    {"brand": "Martini & Rossi Extra Dry", "abv": 15},
+    {"brand": "Cinzano Extra Dry", "abv": 15}
+  ],
+  "vermouth_sweet": [
+    {"brand": "Carpano Antica Formula", "abv": 16.5},
+    {"brand": "Dolin Rouge", "abv": 16},
+    {"brand": "Cocchi Vermouth di Torino", "abv": 16},
+    {"brand": "Martini & Rossi Rosso", "abv": 15},
+    {"brand": "Punt e Mes", "abv": 16}
+  ],
+  "orange_liqueur": [
+    {"brand": "Cointreau", "abv": 40},
+    {"brand": "Grand Marnier", "abv": 40},
+    {"brand": "Pierre Ferrand Dry Curacao", "abv": 40},
+    {"brand": "Combier", "abv": 40}
+  ],
+  "campari": [
+    {"brand": "Campari", "abv": 25}
+  ],
+  "angostura": [
+    {"brand": "Angostura Bitters", "abv": 44.7}
+  ],
+  "simple_syrup": [
+    {"brand": "Simple Syrup (1:1)", "abv": 0},
+    {"brand": "Rich Simple Syrup (2:1)", "abv": 0}
+  ],
+  "olive_brine": [
+    {"brand": "Olive Brine", "abv": 0}
+  ]
+}
