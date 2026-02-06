@@ -5,7 +5,7 @@
     "serving_size_ml": 90,
     "presets": {
       "mild": {"name": "Mild", "abv": 28},
-      "normal": {"name": "Normal", "abv": 30},
+      "classic": {"name": "Classic", "abv": 30},
       "strong": {"name": "Strong", "abv": 32}
     },
     "variations": {
@@ -60,9 +60,9 @@
     "base_spirit": "rye",
     "serving_size_ml": 90,
     "presets": {
-      "mild": {"name": "Mild", "abv": 22},
-      "normal": {"name": "Normal", "abv": 24},
-      "strong": {"name": "Strong", "abv": 26}
+      "mild": {"name": "Mild", "abv": 31},
+      "classic": {"name": "Classic", "abv": 34},
+      "strong": {"name": "Strong", "abv": 37}
     },
     "variations": {
       "classic": {
@@ -106,9 +106,9 @@
     "base_spirit": "bourbon",
     "serving_size_ml": 75,
     "presets": {
-      "mild": {"name": "Mild", "abv": 22},
-      "normal": {"name": "Normal", "abv": 24},
-      "strong": {"name": "Strong", "abv": 26}
+      "mild": {"name": "Mild", "abv": 37},
+      "classic": {"name": "Classic", "abv": 40},
+      "strong": {"name": "Strong", "abv": 42}
     },
     "variations": {
       "bourbon": {
@@ -135,9 +135,9 @@
     "base_spirit": "gin",
     "serving_size_ml": 90,
     "presets": {
-      "mild": {"name": "Mild", "abv": 22},
-      "normal": {"name": "Normal", "abv": 24},
-      "strong": {"name": "Strong", "abv": 26}
+      "mild": {"name": "Mild", "abv": 28},
+      "classic": {"name": "Classic", "abv": 24},
+      "strong": {"name": "Strong", "abv": 20}
     },
     "variations": {
       "classic": {
