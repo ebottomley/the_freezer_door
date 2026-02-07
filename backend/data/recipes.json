@@ -135,9 +135,9 @@
     "base_spirit": "gin",
     "serving_size_ml": 90,
     "presets": {
-      "mild": {"name": "Mild", "abv": 28},
+      "mild": {"name": "Mild", "abv": 20},
       "classic": {"name": "Classic", "abv": 24},
-      "strong": {"name": "Strong", "abv": 20}
+      "strong": {"name": "Strong", "abv": 28}
     },
     "variations": {
       "classic": {
