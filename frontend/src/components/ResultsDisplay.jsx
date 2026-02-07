@@ -125,7 +125,7 @@ export default function ResultsDisplay({ results, unit, servingSizeMl }) {
         {servingSizeMl && (
           <div className="stat">
             <div className="stat-value">
-              {Math.floor(total_volume_ml / servingSizeMl)}
+              {Math.round(total_volume_ml / servingSizeMl)}
             </div>
             <div className="stat-label">Drinks</div>
           </div>
