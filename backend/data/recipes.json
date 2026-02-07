@@ -2,7 +2,7 @@
   "martini": {
     "name": "Martini",
     "base_spirit": "gin",
-    "serving_size_ml": 90,
+    "serving_size_ml": 104,
     "presets": {
       "mild": {"name": "Mild", "abv": 28},
       "classic": {"name": "Classic", "abv": 30},
@@ -58,7 +58,7 @@
   "manhattan": {
     "name": "Manhattan",
     "base_spirit": "rye",
-    "serving_size_ml": 90,
+    "serving_size_ml": 104,
     "presets": {
       "mild": {"name": "Mild", "abv": 31},
       "classic": {"name": "Classic", "abv": 34},
@@ -133,7 +133,7 @@
   "negroni": {
     "name": "Negroni",
     "base_spirit": "gin",
-    "serving_size_ml": 90,
+    "serving_size_ml": 104,
     "presets": {
       "mild": {"name": "Mild", "abv": 20},
       "classic": {"name": "Classic", "abv": 24},
