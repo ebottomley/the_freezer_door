@@ -12,7 +12,13 @@ const SPIRIT_LABELS = {
   campari: 'Campari',
   angostura: 'Bitters',
   simple_syrup: 'Simple Syrup',
-  olive_brine: 'Olive Brine'
+  olive_brine: 'Olive Brine',
+  amaro: 'Amaro',
+  tequila: 'Tequila',
+  mezcal: 'Mezcal',
+  agave_nectar: 'Agave Nectar',
+  suze: 'Suze',
+  lillet_blanc: 'Lillet Blanc'
 };
 
 export default function ResultsDisplay({ results, unit, servingSizeMl }) {

@@ -64,5 +64,33 @@
   ],
   "olive_brine": [
     {"brand": "Olive Brine", "abv": 0}
+  ],
+  "amaro": [
+    {"brand": "Averna", "abv": 29},
+    {"brand": "Montenegro", "abv": 23},
+    {"brand": "Ramazzotti", "abv": 30},
+    {"brand": "Nonino", "abv": 35}
+  ],
+  "tequila": [
+    {"brand": "El Tesoro Reposado", "abv": 40},
+    {"brand": "Fortaleza Reposado", "abv": 40},
+    {"brand": "Olmeca Altos Reposado", "abv": 40},
+    {"brand": "Espolòn Reposado", "abv": 40},
+    {"brand": "Herradura Reposado", "abv": 40}
+  ],
+  "mezcal": [
+    {"brand": "Del Maguey Vida", "abv": 42},
+    {"brand": "Banhez Espadin", "abv": 42},
+    {"brand": "Montelobos Espadin", "abv": 43.2},
+    {"brand": "El Silencio Espadin", "abv": 40}
+  ],
+  "agave_nectar": [
+    {"brand": "Agave Nectar", "abv": 0}
+  ],
+  "suze": [
+    {"brand": "Suze", "abv": 20}
+  ],
+  "lillet_blanc": [
+    {"brand": "Lillet Blanc", "abv": 17}
   ]
 }

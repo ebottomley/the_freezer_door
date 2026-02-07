@@ -97,6 +97,14 @@
           "vermouth_dry": 1,
           "angostura": 0.05
         }
+      },
+      "black": {
+        "name": "Black Manhattan",
+        "ingredients": {
+          "rye": 2,
+          "amaro": 1,
+          "angostura": 0.05
+        }
       }
     },
     "garnish": "Luxardo cherry"
@@ -124,6 +132,15 @@
         "ingredients": {
           "rye": 2,
           "simple_syrup": 0.25,
+          "angostura": 0.05
+        }
+      },
+      "oaxacan": {
+        "name": "Oaxacan Old Fashioned",
+        "ingredients": {
+          "tequila": 1.5,
+          "mezcal": 0.5,
+          "agave_nectar": 0.17,
           "angostura": 0.05
         }
       }
@@ -154,6 +171,14 @@
           "bourbon": 1.5,
           "campari": 1,
           "vermouth_sweet": 1
+        }
+      },
+      "white": {
+        "name": "White Negroni",
+        "ingredients": {
+          "gin": 1,
+          "suze": 1,
+          "lillet_blanc": 1
         }
       }
     },
