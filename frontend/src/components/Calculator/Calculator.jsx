@@ -17,14 +17,18 @@ const DEFAULT_VARIATIONS = {
 
 const ML_PER_OZ = 29.5735;
 const DEFAULT_DRINKS = 6;
-const DEFAULT_SERVING_ML = 90;
+const DEFAULT_SERVING_OZ = 3.5;
 
 const calculateDefaultVolume = (servingSizeMl, currentUnit) => {
-  const serving = servingSizeMl || DEFAULT_SERVING_ML;
-  const totalMl = DEFAULT_DRINKS * serving;
-  return currentUnit === 'oz'
-    ? parseFloat((totalMl / ML_PER_OZ).toFixed(1))
-    : totalMl;
+  // Use clean oz values for oz mode, ml for ml mode
+  if (currentUnit === 'oz') {
+    const servingOz = servingSizeMl ? servingSizeMl / ML_PER_OZ : DEFAULT_SERVING_OZ;
+    // Round serving to nearest 0.5 oz for clean numbers
+    const cleanServingOz = Math.round(servingOz * 2) / 2;
+    return DEFAULT_DRINKS * cleanServingOz;
+  }
+  const serving = servingSizeMl || Math.round(DEFAULT_SERVING_OZ * ML_PER_OZ);
+  return DEFAULT_DRINKS * serving;
 };
 
 function Calculator() {
@@ -39,7 +43,7 @@ function Calculator() {
   const [selectedCocktail, setSelectedCocktail] = useState('');
   const [selectedVariation, setSelectedVariation] = useState('');
   const [selectedSpirits, setSelectedSpirits] = useState({});
-  const [volume, setVolume] = useState(parseFloat((DEFAULT_DRINKS * DEFAULT_SERVING_ML / ML_PER_OZ).toFixed(1)));
+  const [volume, setVolume] = useState(DEFAULT_DRINKS * DEFAULT_SERVING_OZ);
   const [unit, setUnit] = useState('oz');
   const [volumeMode, setVolumeMode] = useState('volume');
   const [targetABV, setTargetABV] = useState(24);

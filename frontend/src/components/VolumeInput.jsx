@@ -14,8 +14,13 @@ export default function VolumeInput({ volume, unit, onVolumeChange, onUnitChange
   const handleDrinksChange = (numDrinks) => {
     const drinks = parseInt(numDrinks) || 0;
     if (servingSizeMl && drinks > 0) {
-      const totalMl = drinks * servingSizeMl;
-      onVolumeChange(unit === 'oz' ? totalMl / 29.5735 : totalMl);
+      if (unit === 'oz') {
+        // Use clean oz values - round serving to nearest 0.5 oz
+        const servingOz = Math.round((servingSizeMl / ML_PER_OZ) * 2) / 2;
+        onVolumeChange(drinks * servingOz);
+      } else {
+        onVolumeChange(drinks * servingSizeMl);
+      }
     }
   };
 

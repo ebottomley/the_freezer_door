@@ -130,13 +130,13 @@ test.describe('Volume and Unit Handling', () => {
   })
 
   test('default volume is 6 drinks worth in oz', async ({ page }) => {
-    // Volume input should show ~18.3 oz (6 drinks x 90ml serving)
+    // Volume input should show ~21.1 oz (6 drinks x 104ml serving)
     const volumeInput = page.locator('input[type="number"]').first()
     const value = await volumeInput.inputValue()
 
-    // Should be approximately 18.3 (6 * 90 / 29.5735)
+    // Should be approximately 21.1 (6 * 104 / 29.5735)
     const numValue = parseFloat(value)
-    expect(numValue).toBeGreaterThan(18)
-    expect(numValue).toBeLessThan(19)
+    expect(numValue).toBeGreaterThan(20)
+    expect(numValue).toBeLessThan(22)
   })
 })
