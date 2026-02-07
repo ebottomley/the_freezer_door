@@ -40,6 +40,48 @@ describe('VolumeInput', () => {
     expect(onUnitChange).toHaveBeenCalledWith('oz')
   })
 
+  it('converts volume from ml to oz when unit changed', () => {
+    const onVolumeChange = vi.fn()
+    const onUnitChange = vi.fn()
+    render(
+      <VolumeInput
+        {...defaultProps}
+        volume={750}
+        unit="ml"
+        onVolumeChange={onVolumeChange}
+        onUnitChange={onUnitChange}
+      />
+    )
+
+    const unitSelect = screen.getByRole('combobox')
+    fireEvent.change(unitSelect, { target: { value: 'oz' } })
+
+    // 750ml / 29.5735 ≈ 25.4 oz
+    expect(onVolumeChange).toHaveBeenCalledWith(25.4)
+    expect(onUnitChange).toHaveBeenCalledWith('oz')
+  })
+
+  it('converts volume from oz to ml when unit changed', () => {
+    const onVolumeChange = vi.fn()
+    const onUnitChange = vi.fn()
+    render(
+      <VolumeInput
+        {...defaultProps}
+        volume={18}
+        unit="oz"
+        onVolumeChange={onVolumeChange}
+        onUnitChange={onUnitChange}
+      />
+    )
+
+    const unitSelect = screen.getByRole('combobox')
+    fireEvent.change(unitSelect, { target: { value: 'ml' } })
+
+    // 18oz * 29.5735 ≈ 532 ml
+    expect(onVolumeChange).toHaveBeenCalledWith(532)
+    expect(onUnitChange).toHaveBeenCalledWith('ml')
+  })
+
   it('shows drinks mode when selected', () => {
     render(<VolumeInput {...defaultProps} mode="drinks" />)
 

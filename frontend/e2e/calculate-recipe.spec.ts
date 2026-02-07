@@ -2,29 +2,19 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Recipe Calculation Flow', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/')
-  })
-
-  test('calculate martini recipe successfully', async ({ page }) => {
+    // Navigate directly to the calculator with a pre-selected cocktail
+    await page.goto('/cocktail/martini')
     // Wait for app to load
     await expect(page.getByText('The Freezer Door')).toBeVisible()
     await expect(page.getByText('Select Cocktail')).toBeVisible()
+  })
 
-    // Select cocktail
-    const cocktailSelect = page.locator('select').first()
-    await cocktailSelect.selectOption('martini')
-
-    // Wait for variation dropdown to be enabled and select one
-    const variationSelect = page.locator('select').nth(1)
-    await expect(variationSelect).toBeEnabled()
-    await variationSelect.selectOption('classic')
-
+  test('calculate martini recipe successfully', async ({ page }) => {
+    // Martini and classic variation should be pre-selected via URL
     // Wait for spirit selectors to appear (check for the card heading)
     await expect(page.getByRole('heading', { name: 'Select Spirits' })).toBeVisible()
 
-    // Set volume (default should already be 750ml)
-    const volumeInput = page.locator('input[type="number"]').first()
-    await volumeInput.fill('750')
+    // Volume defaults to ~18.3 oz (6 drinks × 90ml) - just use that default
 
     // Click calculate
     await page.getByRole('button', { name: /Calculate Recipe/i }).click()
@@ -45,16 +35,6 @@ test.describe('Recipe Calculation Flow', () => {
   })
 
   test('display correct water dilution amount', async ({ page }) => {
-    await expect(page.getByText('The Freezer Door')).toBeVisible()
-
-    // Select cocktail and variation
-    const cocktailSelect = page.locator('select').first()
-    await cocktailSelect.selectOption('martini')
-
-    const variationSelect = page.locator('select').nth(1)
-    await expect(variationSelect).toBeEnabled()
-    await variationSelect.selectOption('classic')
-
     // Wait for spirit selectors
     await expect(page.getByRole('heading', { name: 'Select Spirits' })).toBeVisible()
 
@@ -70,16 +50,6 @@ test.describe('Recipe Calculation Flow', () => {
   })
 
   test('update calculation when ABV changed', async ({ page }) => {
-    await expect(page.getByText('The Freezer Door')).toBeVisible()
-
-    // Select cocktail and variation
-    const cocktailSelect = page.locator('select').first()
-    await cocktailSelect.selectOption('martini')
-
-    const variationSelect = page.locator('select').nth(1)
-    await expect(variationSelect).toBeEnabled()
-    await variationSelect.selectOption('classic')
-
     // Wait for spirit selectors
     await expect(page.getByRole('heading', { name: 'Select Spirits' })).toBeVisible()
 
@@ -113,20 +83,13 @@ test.describe('Recipe Calculation Flow', () => {
   })
 
   test('calculate with custom volume', async ({ page }) => {
-    await expect(page.getByText('The Freezer Door')).toBeVisible()
-
-    // Select cocktail and variation
-    const cocktailSelect = page.locator('select').first()
-    await cocktailSelect.selectOption('martini')
-
-    const variationSelect = page.locator('select').nth(1)
-    await expect(variationSelect).toBeEnabled()
-    await variationSelect.selectOption('classic')
-
     // Wait for spirit selectors
     await expect(page.getByRole('heading', { name: 'Select Spirits' })).toBeVisible()
 
-    // Set custom volume
+    // Switch to ml and set custom volume
+    const unitSelect = page.locator('select').filter({ has: page.locator('option[value="ml"]') }).first()
+    await unitSelect.selectOption('ml')
+
     const volumeInput = page.locator('input[type="number"]').first()
     await volumeInput.fill('500')
 

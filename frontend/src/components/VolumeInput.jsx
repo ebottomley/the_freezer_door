@@ -1,4 +1,16 @@
+const ML_PER_OZ = 29.5735;
+
 export default function VolumeInput({ volume, unit, onVolumeChange, onUnitChange, servingSizeMl, mode, onModeChange }) {
+  const handleUnitChange = (newUnit) => {
+    if (newUnit !== unit && volume > 0) {
+      const convertedVolume = newUnit === 'oz'
+        ? parseFloat((volume / ML_PER_OZ).toFixed(1))  // ml -> oz
+        : Math.round(volume * ML_PER_OZ);               // oz -> ml
+      onVolumeChange(convertedVolume);
+    }
+    onUnitChange(newUnit);
+  };
+
   const handleDrinksChange = (numDrinks) => {
     const drinks = parseInt(numDrinks) || 0;
     if (servingSizeMl && drinks > 0) {
@@ -47,7 +59,7 @@ export default function VolumeInput({ volume, unit, onVolumeChange, onUnitChange
           </div>
           <div className="form-group">
             <label>Unit</label>
-            <select value={unit} onChange={(e) => onUnitChange(e.target.value)}>
+            <select value={unit} onChange={(e) => handleUnitChange(e.target.value)}>
               <option value="ml">Milliliters (ml)</option>
               <option value="oz">Fluid Ounces (oz)</option>
             </select>
@@ -69,7 +81,7 @@ export default function VolumeInput({ volume, unit, onVolumeChange, onUnitChange
           </div>
           <div className="form-group">
             <label>Display Unit</label>
-            <select value={unit} onChange={(e) => onUnitChange(e.target.value)}>
+            <select value={unit} onChange={(e) => handleUnitChange(e.target.value)}>
               <option value="ml">Milliliters (ml)</option>
               <option value="oz">Fluid Ounces (oz)</option>
             </select>

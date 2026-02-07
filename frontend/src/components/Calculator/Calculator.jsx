@@ -15,6 +15,18 @@ const DEFAULT_VARIATIONS = {
   negroni: 'classic',
 };
 
+const ML_PER_OZ = 29.5735;
+const DEFAULT_DRINKS = 6;
+const DEFAULT_SERVING_ML = 90;
+
+const calculateDefaultVolume = (servingSizeMl, currentUnit) => {
+  const serving = servingSizeMl || DEFAULT_SERVING_ML;
+  const totalMl = DEFAULT_DRINKS * serving;
+  return currentUnit === 'oz'
+    ? parseFloat((totalMl / ML_PER_OZ).toFixed(1))
+    : totalMl;
+};
+
 function Calculator() {
   const { cocktailId } = useParams();
   const navigate = useNavigate();
@@ -27,8 +39,8 @@ function Calculator() {
   const [selectedCocktail, setSelectedCocktail] = useState('');
   const [selectedVariation, setSelectedVariation] = useState('');
   const [selectedSpirits, setSelectedSpirits] = useState({});
-  const [volume, setVolume] = useState(750);
-  const [unit, setUnit] = useState('ml');
+  const [volume, setVolume] = useState(parseFloat((DEFAULT_DRINKS * DEFAULT_SERVING_ML / ML_PER_OZ).toFixed(1)));
+  const [unit, setUnit] = useState('oz');
   const [volumeMode, setVolumeMode] = useState('volume');
   const [targetABV, setTargetABV] = useState(24);
 
@@ -53,6 +65,9 @@ function Calculator() {
           const cocktail = cocktailData.find(c => c.id === cocktailId);
           if (cocktail?.presets?.classic) {
             setTargetABV(cocktail.presets.classic.abv);
+          }
+          if (cocktail?.serving_size_ml) {
+            setVolume(calculateDefaultVolume(cocktail.serving_size_ml, 'oz'));
           }
           // Pre-select the default variation for this cocktail
           const defaultVariation = DEFAULT_VARIATIONS[cocktailId];
@@ -107,6 +122,9 @@ function Calculator() {
     const cocktail = cocktails.find(c => c.id === cocktailId);
     if (cocktail?.presets?.classic) {
       setTargetABV(cocktail.presets.classic.abv);
+    }
+    if (cocktail?.serving_size_ml) {
+      setVolume(calculateDefaultVolume(cocktail.serving_size_ml, unit));
     }
 
     // Pre-select the default variation for this cocktail
