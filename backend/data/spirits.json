@@ -66,8 +66,12 @@
     {"brand": "Averna", "abv": 29},
     {"brand": "Montenegro", "abv": 23},
     {"brand": "Ramazzotti", "abv": 30},
-    {"brand": "Nonino", "abv": 35},
-    {"brand": "Campari", "abv": 25},
+    {"brand": "Nonino", "abv": 35}
+  ],
+  "campari": [
+    {"brand": "Campari", "abv": 25}
+  ],
+  "suze": [
     {"brand": "Suze", "abv": 20}
   ],
   "herbal_liqueur": [

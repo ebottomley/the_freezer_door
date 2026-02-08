@@ -1135,7 +1135,8 @@ select option {
   margin-bottom: 0.75rem;
 }
 
-.recipe-card-abv {
+.recipe-card-abv,
+.recipe-card-drinks {
   display: inline-block;
   padding: 0.25rem 0.75rem;
   font-size: 0.7rem;
@@ -1143,6 +1144,10 @@ select option {
   background: var(--color-chrome);
   border-radius: 100px;
   color: var(--color-text-muted);
+}
+
+.recipe-card-drinks {
+  margin-left: 0.5rem;
 }
 
 .recipe-card-actions {
@@ -1161,6 +1166,9 @@ select option {
   border-radius: 100px;
   cursor: pointer;
   transition: all var(--transition);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .recipe-action-btn.view {
@@ -1169,7 +1177,8 @@ select option {
   color: white;
 }
 
-.recipe-action-btn.view:hover {
+.recipe-action-btn.view:hover,
+.recipe-action-btn.view:active {
   background: var(--color-primary-dark);
   border-color: var(--color-primary-dark);
 }
@@ -1191,7 +1200,8 @@ select option {
   color: var(--color-text-muted);
 }
 
-.recipe-action-btn.delete:hover {
+.recipe-action-btn.delete:hover,
+.recipe-action-btn.delete:active {
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: white;

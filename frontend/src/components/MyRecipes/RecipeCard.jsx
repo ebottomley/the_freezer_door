@@ -75,13 +75,16 @@ export default function RecipeCard({ recipe, onDelete }) {
 
       <div className="recipe-card-meta">
         <span className="recipe-card-abv">{recipe.targetABV}% ABV</span>
+        {recipe.numDrinks && (
+          <span className="recipe-card-drinks">{recipe.numDrinks} drinks</span>
+        )}
       </div>
 
       <div className="recipe-card-actions">
         <Link to={`/favorite/${recipe.id}`} className="recipe-action-btn view">
           View
         </Link>
-        <button onClick={handleDelete} className="recipe-action-btn delete">
+        <button type="button" onClick={handleDelete} className="recipe-action-btn delete">
           Delete
         </button>
       </div>
