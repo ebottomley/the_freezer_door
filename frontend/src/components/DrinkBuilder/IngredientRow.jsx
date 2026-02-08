@@ -9,13 +9,8 @@ const TYPE_LABELS = {
   // Liqueurs
   orange_liqueur: 'Orange Liqueur',
   amaro: 'Amaro',
+  herbal_liqueur: 'Herbal Liqueur',
   coffee_liqueur: 'Coffee Liqueur',
-  // Herbal Liqueurs
-  green_chartreuse: 'Green Chartreuse',
-  yellow_chartreuse: 'Yellow Chartreuse',
-  // Bitter Aperitifs
-  campari: 'Campari',
-  suze: 'Suze',
   // Vermouths
   vermouth_dry: 'Dry Vermouth',
   vermouth_sweet: 'Sweet Vermouth',

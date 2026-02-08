@@ -52,9 +52,6 @@
     {"brand": "Pierre Ferrand Dry Curacao", "abv": 40},
     {"brand": "Combier", "abv": 40}
   ],
-  "campari": [
-    {"brand": "Campari", "abv": 25}
-  ],
   "angostura": [
     {"brand": "Angostura Bitters", "abv": 44.7}
   ],
@@ -69,7 +66,13 @@
     {"brand": "Averna", "abv": 29},
     {"brand": "Montenegro", "abv": 23},
     {"brand": "Ramazzotti", "abv": 30},
-    {"brand": "Nonino", "abv": 35}
+    {"brand": "Nonino", "abv": 35},
+    {"brand": "Campari", "abv": 25},
+    {"brand": "Suze", "abv": 20}
+  ],
+  "herbal_liqueur": [
+    {"brand": "Green Chartreuse", "abv": 55},
+    {"brand": "Yellow Chartreuse", "abv": 40}
   ],
   "tequila": [
     {"brand": "El Tesoro Reposado", "abv": 40},
@@ -86,15 +89,6 @@
   ],
   "agave_nectar": [
     {"brand": "Agave Nectar", "abv": 0}
-  ],
-  "suze": [
-    {"brand": "Suze", "abv": 20}
-  ],
-  "green_chartreuse": [
-    {"brand": "Green Chartreuse", "abv": 55}
-  ],
-  "yellow_chartreuse": [
-    {"brand": "Yellow Chartreuse", "abv": 40}
   ],
   "lillet_blanc": [
     {"brand": "Lillet Blanc", "abv": 17}
