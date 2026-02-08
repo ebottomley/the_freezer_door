@@ -6,7 +6,17 @@
   },
   "liqueurs": {
     "label": "Liqueurs",
-    "types": ["orange_liqueur", "campari", "amaro", "suze"],
+    "types": ["orange_liqueur", "amaro", "coffee_liqueur"],
+    "measurement_unit": "parts"
+  },
+  "herbal_liqueurs": {
+    "label": "Herbal Liqueurs",
+    "types": ["green_chartreuse", "yellow_chartreuse"],
+    "measurement_unit": "parts"
+  },
+  "bitter_aperitifs": {
+    "label": "Bitter Aperitifs",
+    "types": ["campari", "suze"],
     "measurement_unit": "parts"
   },
   "vermouths": {
@@ -31,7 +41,7 @@
   },
   "other": {
     "label": "Other",
-    "types": ["olive_brine", "coffee_liqueur", "cream", "egg_white"],
+    "types": ["olive_brine", "cream", "egg_white"],
     "measurement_unit": "parts"
   }
 }

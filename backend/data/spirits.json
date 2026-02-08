@@ -90,6 +90,12 @@
   "suze": [
     {"brand": "Suze", "abv": 20}
   ],
+  "green_chartreuse": [
+    {"brand": "Green Chartreuse", "abv": 55}
+  ],
+  "yellow_chartreuse": [
+    {"brand": "Yellow Chartreuse", "abv": 40}
+  ],
   "lillet_blanc": [
     {"brand": "Lillet Blanc", "abv": 17}
   ],

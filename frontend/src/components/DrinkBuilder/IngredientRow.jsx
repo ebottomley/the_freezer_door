@@ -8,10 +8,14 @@ const TYPE_LABELS = {
   mezcal: 'Mezcal',
   // Liqueurs
   orange_liqueur: 'Orange Liqueur',
-  campari: 'Campari',
   amaro: 'Amaro',
-  suze: 'Suze',
   coffee_liqueur: 'Coffee Liqueur',
+  // Herbal Liqueurs
+  green_chartreuse: 'Green Chartreuse',
+  yellow_chartreuse: 'Yellow Chartreuse',
+  // Bitter Aperitifs
+  campari: 'Campari',
+  suze: 'Suze',
   // Vermouths
   vermouth_dry: 'Dry Vermouth',
   vermouth_sweet: 'Sweet Vermouth',
