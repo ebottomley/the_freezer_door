@@ -115,8 +115,8 @@ describe('HomePage', () => {
 
     await waitFor(() => {
       const links = screen.getAllByRole('link');
-      // 4 cocktail cards + 1 basics link
-      expect(links.length).toBe(5);
+      // 4 cocktail cards + 2 action links (Build Your Own, My Recipes) + 1 basics link
+      expect(links.length).toBe(7);
     });
   });
 

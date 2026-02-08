@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { formatSimplifiedAmount } from '../utils/simplifyMeasurements'
+import { formatSimplifiedAmount, simplifyOz, simplifyMl } from '../utils/simplifyMeasurements'
+import { generateRecipePdf } from './PdfExport/RecipePdf'
 
 const SPIRIT_LABELS = {
   gin: 'Gin',
@@ -10,7 +11,9 @@ const SPIRIT_LABELS = {
   vermouth_sweet: 'Sweet Vermouth',
   orange_liqueur: 'Orange Liqueur',
   campari: 'Campari',
-  angostura: 'Bitters',
+  angostura: 'Angostura Bitters',
+  peychauds: "Peychaud's Bitters",
+  orange_bitters: 'Orange Bitters',
   simple_syrup: 'Simple Syrup',
   olive_brine: 'Olive Brine',
   amaro: 'Amaro',
@@ -18,11 +21,21 @@ const SPIRIT_LABELS = {
   mezcal: 'Mezcal',
   agave_nectar: 'Agave Nectar',
   suze: 'Suze',
-  lillet_blanc: 'Lillet Blanc'
+  lillet_blanc: 'Lillet Blanc',
+  coffee_liqueur: 'Coffee Liqueur',
+  lime_juice: 'Lime Juice',
+  lemon_juice: 'Lemon Juice',
+  grapefruit_juice: 'Grapefruit Juice',
+  orange_juice: 'Orange Juice',
+  honey_syrup: 'Honey Syrup',
+  demerara_syrup: 'Demerara Syrup',
+  cream: 'Cream',
+  egg_white: 'Egg White'
 };
 
-export default function ResultsDisplay({ results, unit, servingSizeMl }) {
+export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomRecipe, numDrinks }) {
   const [simplified, setSimplified] = useState(false)
+  const [exporting, setExporting] = useState(false)
 
   if (!results) return null;
 
@@ -67,6 +80,25 @@ export default function ResultsDisplay({ results, unit, servingSizeMl }) {
     );
   };
 
+  // Get simplified or exact total volume
+  const getDisplayedTotalVolume = () => {
+    if (simplified) {
+      if (showOzFirst) {
+        return simplifyOz(total_volume_oz).display;
+      }
+      return simplifyMl(total_volume_ml).display;
+    }
+    return showOzFirst ? `${total_volume_oz} oz` : `${total_volume_ml} ml`;
+  };
+
+  // Get displayed final ABV (rounded if simplified)
+  const getDisplayedFinalABV = () => {
+    if (simplified) {
+      return `${Math.round(final_abv)}%`;
+    }
+    return `${final_abv}%`;
+  };
+
   return (
     <div className="card results">
       <h2>{cocktail_name}</h2>
@@ -88,7 +120,7 @@ export default function ResultsDisplay({ results, unit, servingSizeMl }) {
         {Object.entries(ingredients).map(([ingredient, ml]) => (
           <li key={ingredient} className="ingredient-item">
             <div className="ingredient-name">
-              {SPIRIT_LABELS[ingredient] || ingredient}
+              {SPIRIT_LABELS[ingredient] || ingredient.replace(/_\d+$/, '').split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
               {spirit_brands[ingredient] && (
                 <span className="ingredient-brand">{spirit_brands[ingredient]}</span>
               )}
@@ -113,16 +145,20 @@ export default function ResultsDisplay({ results, unit, servingSizeMl }) {
           <div className="stat-label">Initial ABV</div>
         </div>
         <div className="stat">
-          <div className="stat-value">{final_abv}%</div>
+          <div className="stat-value">{getDisplayedFinalABV()}</div>
           <div className="stat-label">Final ABV</div>
         </div>
         <div className="stat">
-          <div className="stat-value">
-            {showOzFirst ? `${total_volume_oz} oz` : `${total_volume_ml} ml`}
-          </div>
+          <div className="stat-value">{getDisplayedTotalVolume()}</div>
           <div className="stat-label">Total Volume</div>
         </div>
-        {servingSizeMl && (
+        {numDrinks && (
+          <div className="stat">
+            <div className="stat-value">{numDrinks}</div>
+            <div className="stat-label">Drinks</div>
+          </div>
+        )}
+        {!numDrinks && servingSizeMl && (
           <div className="stat">
             <div className="stat-value">
               {Math.round(total_volume_ml / servingSizeMl)}
@@ -136,6 +172,25 @@ export default function ResultsDisplay({ results, unit, servingSizeMl }) {
         <div className="garnish">
           Garnish: {garnish}
         </div>
+      )}
+
+      {isCustomRecipe && (
+        <button
+          className="export-btn"
+          onClick={async () => {
+            setExporting(true);
+            try {
+              await generateRecipePdf(results, unit);
+            } catch (err) {
+              console.error('PDF export failed:', err);
+            } finally {
+              setExporting(false);
+            }
+          }}
+          disabled={exporting}
+        >
+          {exporting ? 'Generating PDF...' : 'Export as PDF'}
+        </button>
       )}
     </div>
   );

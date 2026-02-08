@@ -22,6 +22,11 @@ def load_recipes():
         return json.load(f)
 
 
+def load_ingredient_categories():
+    with open(os.path.join(DATA_DIR, 'ingredient_categories.json'), 'r') as f:
+        return json.load(f)
+
+
 @api.route('/cocktails', methods=['GET'])
 def get_cocktails():
     """Get all available cocktails with their variations."""
@@ -87,12 +92,36 @@ def get_spirits_by_category(category):
     return jsonify(spirits[category])
 
 
+@api.route('/ingredients', methods=['GET'])
+def get_ingredients():
+    """Get all ingredients organized by category with their brands."""
+    categories = load_ingredient_categories()
+    spirits = load_spirits()
+
+    result = {}
+    for category_id, category in categories.items():
+        types_with_brands = {}
+        for type_id in category['types']:
+            if type_id in spirits:
+                types_with_brands[type_id] = spirits[type_id]
+            else:
+                types_with_brands[type_id] = []
+
+        result[category_id] = {
+            'label': category['label'],
+            'measurement_unit': category['measurement_unit'],
+            'types': types_with_brands
+        }
+
+    return jsonify(result)
+
+
 @api.route('/calculate', methods=['POST'])
 def calculate():
     """
     Calculate a freezer cocktail recipe.
 
-    Request body:
+    Standard mode request body:
     {
         "cocktail": "martini",
         "variation": "classic",
@@ -103,10 +132,27 @@ def calculate():
         "target_volume_ml": 750,
         "target_abv": 24
     }
+
+    Custom mode request body:
+    {
+        "mode": "custom",
+        "ingredients": [
+            {"type": "gin", "brand": "Tanqueray", "parts": 2.5, "abv": 47.3},
+            {"type": "vermouth_dry", "brand": "Dolin Dry", "parts": 0.5, "abv": 17.5}
+        ],
+        "target_volume_ml": 750,
+        "target_abv": 24,
+        "recipe_name": "My Custom Martini",
+        "garnish": "Lemon twist"
+    }
     """
     data = request.get_json()
 
-    # Validate required fields
+    # Check if custom mode
+    if data.get('mode') == 'custom':
+        return calculate_custom(data)
+
+    # Standard mode - validate required fields
     required = ['cocktail', 'variation', 'spirits', 'target_volume_ml', 'target_abv']
     for field in required:
         if field not in data:
@@ -165,6 +211,67 @@ def calculate():
     result['cocktail_name'] = cocktail['name']
     result['variation_name'] = recipe['name']
     result['garnish'] = cocktail.get('garnish', '')
+
+    return jsonify(result)
+
+
+def calculate_custom(data):
+    """Handle custom recipe calculation."""
+    # Validate required fields for custom mode
+    required = ['ingredients', 'target_volume_ml', 'target_abv']
+    for field in required:
+        if field not in data:
+            return jsonify({"error": f"Missing required field: {field}"}), 400
+
+    ingredients = data['ingredients']
+    if not ingredients or len(ingredients) == 0:
+        return jsonify({"error": "At least one ingredient is required"}), 400
+
+    # Build recipe_ingredients and spirit_abvs from the ingredients array
+    recipe_ingredients = {}
+    spirit_abvs = {}
+    spirit_brands = {}
+
+    for ing in ingredients:
+        if 'type' not in ing or 'parts' not in ing:
+            return jsonify({"error": "Each ingredient must have type and parts"}), 400
+
+        ing_type = ing['type']
+        parts = float(ing['parts'])
+
+        # Handle multiple ingredients of same type by creating unique keys
+        key = ing_type
+        counter = 1
+        while key in recipe_ingredients:
+            counter += 1
+            key = f"{ing_type}_{counter}"
+
+        recipe_ingredients[key] = parts
+        spirit_abvs[key] = float(ing.get('abv', 0))
+        spirit_brands[key] = ing.get('brand', 'Custom')
+
+    # Calculate recipe using existing function
+    result = calculate_recipe(
+        recipe_ingredients,
+        spirit_abvs,
+        data['target_volume_ml'],
+        data['target_abv']
+    )
+
+    # Add oz conversions
+    result['ingredients_oz'] = {
+        ingredient: ml_to_oz(ml)
+        for ingredient, ml in result['ingredients'].items()
+    }
+    result['water_oz'] = ml_to_oz(result['water_ml'])
+    result['total_volume_oz'] = ml_to_oz(result['total_volume_ml'])
+
+    # Add custom recipe details
+    result['spirit_brands'] = spirit_brands
+    result['cocktail_name'] = data.get('recipe_name', 'Custom Recipe')
+    result['variation_name'] = 'Custom'
+    result['garnish'] = data.get('garnish', '')
+    result['is_custom'] = True
 
     return jsonify(result)
 

@@ -92,5 +92,46 @@
   ],
   "lillet_blanc": [
     {"brand": "Lillet Blanc", "abv": 17}
+  ],
+  "peychauds": [
+    {"brand": "Peychaud's Bitters", "abv": 35}
+  ],
+  "orange_bitters": [
+    {"brand": "Angostura Orange", "abv": 28},
+    {"brand": "Regans' Orange Bitters No. 6", "abv": 45},
+    {"brand": "Fee Brothers Orange", "abv": 9}
+  ],
+  "lime_juice": [
+    {"brand": "Fresh Lime Juice", "abv": 0}
+  ],
+  "lemon_juice": [
+    {"brand": "Fresh Lemon Juice", "abv": 0}
+  ],
+  "grapefruit_juice": [
+    {"brand": "Fresh Grapefruit Juice", "abv": 0}
+  ],
+  "orange_juice": [
+    {"brand": "Fresh Orange Juice", "abv": 0}
+  ],
+  "honey_syrup": [
+    {"brand": "Honey Syrup (3:1)", "abv": 0},
+    {"brand": "Honey Syrup (2:1)", "abv": 0}
+  ],
+  "demerara_syrup": [
+    {"brand": "Demerara Syrup (2:1)", "abv": 0},
+    {"brand": "Demerara Syrup (1:1)", "abv": 0}
+  ],
+  "coffee_liqueur": [
+    {"brand": "Kahlúa", "abv": 20},
+    {"brand": "Mr Black", "abv": 25},
+    {"brand": "Tia Maria", "abv": 20}
+  ],
+  "cream": [
+    {"brand": "Heavy Cream", "abv": 0},
+    {"brand": "Half & Half", "abv": 0}
+  ],
+  "egg_white": [
+    {"brand": "Egg White", "abv": 0},
+    {"brand": "Aquafaba", "abv": 0}
   ]
 }

@@ -1,0 +1,37 @@
+{
+  "spirits": {
+    "label": "Spirits",
+    "types": ["vodka", "gin", "bourbon", "rye", "tequila", "mezcal"],
+    "measurement_unit": "parts"
+  },
+  "liqueurs": {
+    "label": "Liqueurs",
+    "types": ["orange_liqueur", "campari", "amaro", "suze"],
+    "measurement_unit": "parts"
+  },
+  "vermouths": {
+    "label": "Vermouths & Aperitifs",
+    "types": ["vermouth_dry", "vermouth_sweet", "lillet_blanc"],
+    "measurement_unit": "parts"
+  },
+  "bitters": {
+    "label": "Bitters",
+    "types": ["angostura", "peychauds", "orange_bitters"],
+    "measurement_unit": "dashes"
+  },
+  "sweeteners": {
+    "label": "Sweeteners",
+    "types": ["simple_syrup", "agave_nectar", "honey_syrup", "demerara_syrup"],
+    "measurement_unit": "parts"
+  },
+  "juices": {
+    "label": "Juices",
+    "types": ["lime_juice", "lemon_juice", "grapefruit_juice", "orange_juice"],
+    "measurement_unit": "parts"
+  },
+  "other": {
+    "label": "Other",
+    "types": ["olive_brine", "coffee_liqueur", "cream", "egg_white"],
+    "measurement_unit": "parts"
+  }
+}

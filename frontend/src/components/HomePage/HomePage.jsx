@@ -60,6 +60,14 @@ function HomePage() {
               />
             ))}
           </div>
+          <div className="home-action-buttons">
+            <Link to="/build" className="build-link">
+              Build Your Own Drink
+            </Link>
+            <Link to="/my-recipes" className="recipes-link">
+              My Recipes
+            </Link>
+          </div>
         </div>
         <Link to="/basics" className="basics-link">
           Learn Freezer Bar Basics

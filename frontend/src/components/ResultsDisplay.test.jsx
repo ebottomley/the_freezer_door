@@ -136,8 +136,8 @@ describe('ResultsDisplay', () => {
 
     render(<ResultsDisplay results={resultsWithUnknown} unit="ml" />)
 
-    // Should display the ingredient key as-is
-    expect(screen.getByText('unknown_spirit')).toBeInTheDocument()
+    // Should display the ingredient key formatted as title case
+    expect(screen.getByText('Unknown Spirit')).toBeInTheDocument()
   })
 
   describe('Simplify measurements toggle', () => {

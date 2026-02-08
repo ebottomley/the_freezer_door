@@ -32,3 +32,27 @@ export async function calculateRecipe(data) {
   }
   return response.json();
 }
+
+export async function getIngredients() {
+  const response = await fetch(`${API_BASE}/ingredients`);
+  if (!response.ok) throw new Error('Failed to fetch ingredients');
+  return response.json();
+}
+
+export async function calculateCustomRecipe(data) {
+  const response = await fetch(`${API_BASE}/calculate`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      mode: 'custom',
+      ...data
+    }),
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Calculation failed');
+  }
+  return response.json();
+}
