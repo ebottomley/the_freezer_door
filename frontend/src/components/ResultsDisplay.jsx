@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { formatSimplifiedAmount, simplifyOz, simplifyMl } from '../utils/simplifyMeasurements'
 import { generateRecipePdf } from './PdfExport/RecipePdf'
 
@@ -38,6 +38,86 @@ const SPIRIT_LABELS = {
 export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomRecipe, numDrinks }) {
   const [simplified, setSimplified] = useState(false)
   const [exporting, setExporting] = useState(false)
+
+  // Calculate simplified stats when in simplified mode
+  // Note: useMemo must be called before any early returns (rules of hooks)
+  const simplifiedStats = useMemo(() => {
+    if (!simplified || !results) return null;
+
+    const { ingredients, ingredients_oz, water_ml, water_oz, initial_abv } = results;
+
+    // Get simplified values for each ingredient
+    let sumSimplifiedIngredientsMl = 0;
+    let sumSimplifiedIngredientsOz = 0;
+
+    Object.entries(ingredients).forEach(([ingredient, ml]) => {
+      const oz = ingredients_oz[ingredient];
+
+      // Convert dashes and bar tsp back to ml/oz for summing
+      const mlResult = simplifyMl(ml);
+      const ozResult = simplifyOz(oz);
+
+      let effectiveMl = mlResult.value;
+      let effectiveOz = ozResult.value;
+
+      if (mlResult.unit === 'dash') {
+        effectiveMl = mlResult.value; // 1 dash ≈ 1ml
+      } else if (mlResult.unit === 'bar tsp') {
+        effectiveMl = mlResult.value * 5; // 1 bar tsp = 5ml
+      }
+
+      if (ozResult.unit === 'dash') {
+        effectiveOz = ozResult.value / 29.57; // convert dashes (in ml) to oz
+      } else if (ozResult.unit === 'bar tsp') {
+        effectiveOz = (ozResult.value * 5) / 29.57; // convert bar tsp to oz
+      }
+
+      sumSimplifiedIngredientsMl += effectiveMl;
+      sumSimplifiedIngredientsOz += effectiveOz;
+    });
+
+    // Get simplified water values
+    const waterMlResult = simplifyMl(water_ml);
+    const waterOzResult = simplifyOz(water_oz);
+
+    let simplifiedWaterMl = waterMlResult.value;
+    let simplifiedWaterOz = waterOzResult.value;
+
+    if (waterMlResult.unit === 'bar tsp') {
+      simplifiedWaterMl = waterMlResult.value * 5;
+    }
+    if (waterOzResult.unit === 'bar tsp') {
+      simplifiedWaterOz = (waterOzResult.value * 5) / 29.57;
+    }
+
+    // Calculate simplified totals
+    const simplifiedTotalMl = sumSimplifiedIngredientsMl + simplifiedWaterMl;
+    const simplifiedTotalOz = sumSimplifiedIngredientsOz + simplifiedWaterOz;
+
+    // Calculate simplified ABV values
+    // Original alcohol content (in ml of pure alcohol)
+    const originalSpiritVolume = Object.values(ingredients).reduce((sum, ml) => sum + ml, 0);
+    const alcoholContentMl = originalSpiritVolume * (initial_abv / 100);
+
+    // Simplified initial ABV = alcohol / sum of simplified ingredients
+    const simplifiedInitialAbv = sumSimplifiedIngredientsMl > 0
+      ? (alcoholContentMl / sumSimplifiedIngredientsMl) * 100
+      : 0;
+
+    // Simplified final ABV = alcohol / simplified total
+    const simplifiedFinalAbv = simplifiedTotalMl > 0
+      ? (alcoholContentMl / simplifiedTotalMl) * 100
+      : 0;
+
+    return {
+      totalMl: Math.round(simplifiedTotalMl),
+      totalOz: Math.round(simplifiedTotalOz * 4) / 4, // Round to nearest 1/4 oz
+      initialAbv: Math.round(simplifiedInitialAbv * 10) / 10, // Round to 1 decimal
+      finalAbv: Math.round(simplifiedFinalAbv * 10) / 10,
+      waterMl: simplifiedWaterMl,
+      waterOz: simplifiedWaterOz
+    };
+  }, [simplified, results]);
 
   if (!results) return null;
 
@@ -84,21 +164,45 @@ export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomR
 
   // Get simplified or exact total volume
   const getDisplayedTotalVolume = () => {
-    if (simplified) {
+    if (simplified && simplifiedStats) {
       if (showOzFirst) {
-        return simplifyOz(total_volume_oz).display;
+        return `${simplifiedStats.totalOz} oz`;
       }
-      return simplifyMl(total_volume_ml).display;
+      return `${simplifiedStats.totalMl} ml`;
     }
     return showOzFirst ? `${total_volume_oz} oz` : `${total_volume_ml} ml`;
   };
 
-  // Get displayed final ABV (rounded if simplified)
+  // Get displayed initial ABV (recalculated from simplified amounts if simplified)
+  const getDisplayedInitialABV = () => {
+    if (simplified && simplifiedStats) {
+      return `${simplifiedStats.initialAbv}%`;
+    }
+    return `${initial_abv}%`;
+  };
+
+  // Get displayed final ABV (recalculated from simplified amounts if simplified)
   const getDisplayedFinalABV = () => {
-    if (simplified) {
-      return `${Math.round(final_abv)}%`;
+    if (simplified && simplifiedStats) {
+      return `${simplifiedStats.finalAbv}%`;
     }
     return `${final_abv}%`;
+  };
+
+  // Check if we should show drinks stat
+  const showDrinksStat = numDrinks || servingSizeMl;
+
+  // Get displayed drinks count
+  const getDisplayedDrinks = () => {
+    if (numDrinks) {
+      return numDrinks;
+    }
+    if (servingSizeMl) {
+      const volumeToUse = (simplified && simplifiedStats) ? simplifiedStats.totalMl : total_volume_ml;
+      const drinks = volumeToUse / servingSizeMl;
+      return Math.round(drinks);
+    }
+    return null;
   };
 
   return (
@@ -114,7 +218,7 @@ export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomR
           Simplify measurements
         </button>
         {simplified && (
-          <span className="toggle-hint">Rounded for easier measuring</span>
+          <span className="toggle-hint">Rounded for easier measuring. ABV and volume may vary slightly.</span>
         )}
       </div>
 
@@ -143,7 +247,7 @@ export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomR
 
       <div className="stats">
         <div className="stat">
-          <div className="stat-value">{initial_abv}%</div>
+          <div className="stat-value">{getDisplayedInitialABV()}</div>
           <div className="stat-label">Initial ABV</div>
         </div>
         <div className="stat">
@@ -154,17 +258,9 @@ export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomR
           <div className="stat-value">{getDisplayedTotalVolume()}</div>
           <div className="stat-label">Total Volume</div>
         </div>
-        {numDrinks && (
+        {showDrinksStat && (
           <div className="stat">
-            <div className="stat-value">{numDrinks}</div>
-            <div className="stat-label">Drinks</div>
-          </div>
-        )}
-        {!numDrinks && servingSizeMl && (
-          <div className="stat">
-            <div className="stat-value">
-              {Math.round(total_volume_ml / servingSizeMl)}
-            </div>
+            <div className="stat-value">{getDisplayedDrinks()}</div>
             <div className="stat-label">Drinks</div>
           </div>
         )}
