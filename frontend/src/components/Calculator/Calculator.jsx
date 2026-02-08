@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import CocktailSelector from '../CocktailSelector';
 import SpiritSelector from '../SpiritSelector';
 import VolumeInput from '../VolumeInput';
@@ -7,6 +7,7 @@ import ABVSelector from '../ABVSelector';
 import ResultsDisplay from '../ResultsDisplay';
 import Header from '../Header/Header';
 import { getCocktails, getSpirits, calculateRecipe } from '../../services/api';
+import { saveFavoriteFromCalculator, updateFavorite } from '../../services/localStorage';
 
 const DEFAULT_VARIATIONS = {
   martini: 'classic',
@@ -34,6 +35,11 @@ const calculateDefaultVolume = (servingSizeMl, currentUnit) => {
 function Calculator() {
   const { cocktailId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if we're editing an existing favorite
+  const editingFavoriteId = location.state?.favoriteId;
+  const editingFavorite = location.state?.favorite;
 
   const [cocktails, setCocktails] = useState([]);
   const [spirits, setSpirits] = useState({});
@@ -47,9 +53,11 @@ function Calculator() {
   const [unit, setUnit] = useState('oz');
   const [volumeMode, setVolumeMode] = useState('volume');
   const [targetABV, setTargetABV] = useState(24);
+  const [customName, setCustomName] = useState('');
 
   const [results, setResults] = useState(null);
   const [calculating, setCalculating] = useState(false);
+  const [saveStatus, setSaveStatus] = useState(null);
 
   const [requiredSpirits, setRequiredSpirits] = useState([]);
 
@@ -63,8 +71,21 @@ function Calculator() {
         setCocktails(cocktailData);
         setSpirits(spiritData);
 
-        // If we have a cocktailId from the URL, pre-select it and its default variation
-        if (cocktailId && cocktailData.some(c => c.id === cocktailId)) {
+        // If editing an existing favorite, use its settings
+        if (editingFavorite) {
+          setSelectedCocktail(editingFavorite.cocktailId);
+          setSelectedVariation(editingFavorite.variationId);
+          setTargetABV(editingFavorite.targetABV);
+          setVolume(editingFavorite.volume);
+          setUnit(editingFavorite.unit || 'oz');
+          setCustomName(editingFavorite.name || '');
+          // Spirits will be set after variation loads
+          if (editingFavorite.spirits) {
+            setSelectedSpirits(editingFavorite.spirits);
+          }
+        }
+        // If we have a cocktailId from the URL but not editing, use defaults
+        else if (cocktailId && cocktailData.some(c => c.id === cocktailId)) {
           setSelectedCocktail(cocktailId);
           const cocktail = cocktailData.find(c => c.id === cocktailId);
           if (cocktail?.presets?.classic) {
@@ -86,7 +107,7 @@ function Calculator() {
       }
     }
     loadData();
-  }, [cocktailId]);
+  }, [cocktailId, editingFavorite]);
 
   useEffect(() => {
     async function loadVariationDetails() {
@@ -185,6 +206,64 @@ function Calculator() {
     }
   };
 
+  const handleSaveToFavorites = () => {
+    if (!results) return;
+
+    // Use custom name if set, otherwise use cocktail name from results
+    const favoriteName = customName.trim() || results.cocktail_name;
+
+    // Calculate number of drinks from volume and serving size
+    const servingSizeMl = selectedCocktailData?.serving_size_ml;
+    const volumeInMl = unit === 'oz' ? volume * ML_PER_OZ : volume;
+    const numDrinks = servingSizeMl ? Math.round(volumeInMl / servingSizeMl) : undefined;
+
+    // Update results with custom name for display
+    const resultsWithName = {
+      ...results,
+      cocktail_name: favoriteName
+    };
+
+    try {
+      if (editingFavoriteId) {
+        // Update existing favorite
+        updateFavorite({
+          id: editingFavoriteId,
+          type: 'standard',
+          name: favoriteName,
+          cocktailId: selectedCocktail,
+          variationId: selectedVariation,
+          spirits: selectedSpirits,
+          targetABV,
+          volume,
+          unit,
+          numDrinks,
+          results: resultsWithName
+        });
+        setSaveStatus({ type: 'success', message: 'Favorite updated!' });
+      } else {
+        // Create new favorite
+        saveFavoriteFromCalculator({
+          cocktailId: selectedCocktail,
+          variationId: selectedVariation,
+          spirits: selectedSpirits,
+          results: resultsWithName,
+          targetABV,
+          volume,
+          unit,
+          numDrinks
+        });
+        setSaveStatus({ type: 'success', message: 'Saved to favorites!' });
+      }
+      // Navigate to favorites after saving
+      setTimeout(() => {
+        navigate('/my-favorites');
+      }, 1000);
+    } catch (err) {
+      setSaveStatus({ type: 'error', message: err.message });
+      setTimeout(() => setSaveStatus(null), 3000);
+    }
+  };
+
   const canCalculate = selectedCocktail &&
     selectedVariation &&
     requiredSpirits.every(s => selectedSpirits[s]) &&
@@ -214,6 +293,19 @@ function Calculator() {
           onCocktailChange={handleCocktailChange}
           onVariationChange={handleVariationChange}
         />
+
+        {editingFavoriteId && (
+          <div className="card">
+            <h2>Favorite Name</h2>
+            <input
+              type="text"
+              className="recipe-name-input"
+              value={customName}
+              onChange={(e) => setCustomName(e.target.value)}
+              placeholder={results?.cocktail_name || 'Custom name for this favorite'}
+            />
+          </div>
+        )}
 
         <SpiritSelector
           requiredSpirits={requiredSpirits}
@@ -246,7 +338,20 @@ function Calculator() {
           {calculating ? 'Calculating...' : 'Calculate Recipe'}
         </button>
 
-        <ResultsDisplay results={results} unit={unit} servingSizeMl={selectedCocktailData?.serving_size_ml} />
+        {saveStatus && (
+          <div className={`save-status ${saveStatus.type}`}>
+            {saveStatus.message}
+          </div>
+        )}
+
+        <ResultsDisplay
+          results={results}
+          unit={unit}
+          servingSizeMl={selectedCocktailData?.serving_size_ml}
+          onSaveToFavorites={handleSaveToFavorites}
+          showActionButtons
+          saveButtonText={editingFavoriteId ? 'Update Favorite' : 'Save to Favorites'}
+        />
       </div>
     </div>
   );

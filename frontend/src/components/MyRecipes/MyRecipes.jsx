@@ -21,11 +21,11 @@ export default function MyRecipes() {
       <Header showBack />
       <main className="container">
         <div className="refrigerator-frame">
-          <h2 className="shelf-title">My Recipes</h2>
+          <h2 className="shelf-title">My Favorites</h2>
 
           {recipes.length === 0 ? (
             <div className="empty-state">
-              <p>You haven't saved any recipes yet.</p>
+              <p>You haven't saved any favorites yet.</p>
               <Link to="/build" className="build-link">
                 Build Your First Drink
               </Link>

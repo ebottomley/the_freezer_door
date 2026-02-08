@@ -32,7 +32,7 @@ const SPIRIT_LABELS = {
   egg_white: 'Egg White'
 };
 
-export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomRecipe, numDrinks }) {
+export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomRecipe, numDrinks, onSaveToFavorites, showActionButtons, saveButtonText }) {
   const [simplified, setSimplified] = useState(false)
   const [exporting, setExporting] = useState(false)
 
@@ -269,23 +269,34 @@ export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomR
         </div>
       )}
 
-      {isCustomRecipe && (
-        <button
-          className="export-btn"
-          onClick={async () => {
-            setExporting(true);
-            try {
-              await generateRecipePdf(results, unit);
-            } catch (err) {
-              console.error('PDF export failed:', err);
-            } finally {
-              setExporting(false);
-            }
-          }}
-          disabled={exporting}
-        >
-          {exporting ? 'Generating PDF...' : 'Export as PDF'}
-        </button>
+      {(isCustomRecipe || showActionButtons) && (
+        <div className="results-actions">
+          {onSaveToFavorites && (
+            <button
+              className="save-favorite-btn"
+              onClick={onSaveToFavorites}
+            >
+              {saveButtonText || 'Save to Favorites'}
+            </button>
+          )}
+          <button
+            className="export-btn"
+            onClick={async () => {
+              setExporting(true);
+              try {
+                const displayedDrinks = getDisplayedDrinks();
+                await generateRecipePdf(results, unit, simplified, displayedDrinks);
+              } catch (err) {
+                console.error('PDF export failed:', err);
+              } finally {
+                setExporting(false);
+              }
+            }}
+            disabled={exporting}
+          >
+            {exporting ? 'Generating PDF...' : 'Export as PDF'}
+          </button>
+        </div>
       )}
     </div>
   );

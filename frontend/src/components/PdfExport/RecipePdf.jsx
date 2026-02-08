@@ -1,4 +1,5 @@
 import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
+import { formatSimplifiedAmount } from '../../utils/simplifyMeasurements';
 
 const SPIRIT_LABELS = {
   gin: 'Gin',
@@ -9,12 +10,13 @@ const SPIRIT_LABELS = {
   vermouth_sweet: 'Sweet Vermouth',
   orange_liqueur: 'Orange Liqueur',
   campari: 'Campari',
-  angostura: 'Bitters',
+  angostura: 'Angostura Bitters',
   peychauds: "Peychaud's Bitters",
   orange_bitters: 'Orange Bitters',
   simple_syrup: 'Simple Syrup',
   olive_brine: 'Olive Brine',
   amaro: 'Amaro',
+  herbal_liqueur: 'Herbal Liqueur',
   tequila: 'Tequila',
   mezcal: 'Mezcal',
   agave_nectar: 'Agave Nectar',
@@ -147,10 +149,13 @@ const styles = StyleSheet.create({
   }
 });
 
-function RecipePdfDocument({ results, unit }) {
+function RecipePdfDocument({ results, unit, simplified, numDrinks }) {
   const showOz = unit === 'oz';
 
   const formatAmount = (ml, oz) => {
+    if (simplified) {
+      return formatSimplifiedAmount(ml, oz, showOz);
+    }
     if (showOz) {
       return `${oz} oz`;
     }
@@ -163,7 +168,7 @@ function RecipePdfDocument({ results, unit }) {
         <View style={styles.header}>
           <Text style={styles.title}>{results.cocktail_name}</Text>
           <Text style={styles.subtitle}>
-            {results.variation_name} - Freezer Batch Recipe
+            {results.variation_name} - Freezer Batch Recipe{simplified ? ' (Simplified)' : ''}
           </Text>
         </View>
 
@@ -213,6 +218,12 @@ function RecipePdfDocument({ results, unit }) {
               </Text>
               <Text style={styles.statLabel}>Total Volume</Text>
             </View>
+            {numDrinks && (
+              <View style={styles.stat}>
+                <Text style={styles.statValue}>{numDrinks}</Text>
+                <Text style={styles.statLabel}>Drinks</Text>
+              </View>
+            )}
           </View>
         </View>
 
@@ -230,8 +241,8 @@ function RecipePdfDocument({ results, unit }) {
   );
 }
 
-export async function generateRecipePdf(results, unit) {
-  const blob = await pdf(<RecipePdfDocument results={results} unit={unit} />).toBlob();
+export async function generateRecipePdf(results, unit, simplified = false, numDrinks = null) {
+  const blob = await pdf(<RecipePdfDocument results={results} unit={unit} simplified={simplified} numDrinks={numDrinks} />).toBlob();
 
   // Create download link
   const url = URL.createObjectURL(blob);

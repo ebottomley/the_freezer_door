@@ -64,8 +64,8 @@ function HomePage() {
             <Link to="/build" className="build-link">
               Build Your Own Drink
             </Link>
-            <Link to="/my-recipes" className="recipes-link">
-              My Recipes
+            <Link to="/my-favorites" className="recipes-link">
+              My Favorites
             </Link>
           </div>
         </div>

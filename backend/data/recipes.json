@@ -60,8 +60,8 @@
     "base_spirit": "rye",
     "serving_size_ml": 104,
     "presets": {
-      "mild": {"name": "Mild", "abv": 31},
-      "classic": {"name": "Classic", "abv": 34},
+      "mild": {"name": "Mild", "abv": 30},
+      "classic": {"name": "Classic", "abv": 33},
       "strong": {"name": "Strong", "abv": 37}
     },
     "variations": {

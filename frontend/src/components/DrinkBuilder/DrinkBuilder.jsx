@@ -24,7 +24,7 @@ export default function DrinkBuilder() {
   const [recipeName, setRecipeName] = useState('');
   const [ingredients, setIngredients] = useState([{ ...DEFAULT_INGREDIENT }]);
   const [garnish, setGarnish] = useState('');
-  const [numDrinks, setNumDrinks] = useState(8);
+  const [numDrinks, setNumDrinks] = useState(6);
   const [targetABV, setTargetABV] = useState(24);
   const [unit, setUnit] = useState('oz');
 
@@ -49,7 +49,7 @@ export default function DrinkBuilder() {
             setRecipeName(recipe.name);
             setIngredients(recipe.ingredients);
             setGarnish(recipe.garnish || '');
-            setNumDrinks(recipe.numDrinks || 8);
+            setNumDrinks(recipe.numDrinks || 6);
             setTargetABV(recipe.targetABV || 24);
             setUnit(recipe.unit || 'oz');
           } else {
@@ -164,37 +164,65 @@ export default function DrinkBuilder() {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const validIngredients = ingredients.filter(ing => ing.type && ing.parts > 0);
 
-    const recipe = {
-      id: recipeId || undefined,
-      name: recipeName,
-      ingredients: validIngredients,
-      garnish,
-      numDrinks,
-      targetABV,
-      unit
-    };
-
-    const validation = validateRecipe(recipe);
-    if (!validation.valid) {
-      setSaveStatus({ type: 'error', message: validation.error });
+    if (!recipeName.trim()) {
+      setSaveStatus({ type: 'error', message: 'Recipe name is required' });
       setTimeout(() => setSaveStatus(null), 3000);
       return;
     }
 
-    try {
-      const saved = saveRecipe(recipe);
-      setSaveStatus({ type: 'success', message: 'Recipe saved!' });
-
-      if (!recipeId && saved.id) {
-        navigate(`/build/${saved.id}`, { replace: true });
-      }
-
+    if (validIngredients.length === 0) {
+      setSaveStatus({ type: 'error', message: 'At least one ingredient is required' });
       setTimeout(() => setSaveStatus(null), 3000);
+      return;
+    }
+
+    setSaveStatus({ type: 'info', message: 'Calculating and saving...' });
+
+    try {
+      // Calculate results before saving
+      const servingSizeOz = getServingSizeOz();
+      const totalVolumeOz = servingSizeOz * numDrinks;
+      const totalVolumeMl = Math.round(totalVolumeOz * ML_PER_OZ);
+
+      const calcData = {
+        ingredients: validIngredients.map(ing => ({
+          type: ing.type,
+          brand: ing.brand || 'Custom',
+          parts: ing.parts,
+          abv: ing.abv
+        })),
+        target_volume_ml: totalVolumeMl,
+        target_abv: targetABV,
+        recipe_name: recipeName,
+        garnish
+      };
+
+      const calculatedResults = await calculateCustomRecipe(calcData);
+
+      const recipe = {
+        id: recipeId || undefined,
+        type: 'custom',
+        name: recipeName,
+        ingredients: validIngredients,
+        garnish,
+        numDrinks,
+        targetABV,
+        unit,
+        results: calculatedResults
+      };
+
+      const saved = saveRecipe(recipe);
+      setSaveStatus({ type: 'success', message: 'Saved to favorites!' });
+
+      // Navigate to favorites after saving
+      setTimeout(() => {
+        navigate('/my-favorites');
+      }, 1000);
     } catch (err) {
-      setSaveStatus({ type: 'error', message: err.message });
+      setSaveStatus({ type: 'error', message: err.message || 'Failed to save' });
       setTimeout(() => setSaveStatus(null), 3000);
     }
   };
@@ -340,9 +368,9 @@ export default function DrinkBuilder() {
           <button
             className="save-recipe-btn"
             onClick={handleSave}
-            disabled={!recipeName.trim() || !isFormValid()}
+            disabled={!recipeName.trim() || !isFormValid() || saveStatus?.type === 'info'}
           >
-            {recipeId ? 'Update Recipe' : 'Save Recipe'}
+            {recipeId ? 'Update Favorite' : 'Save to Favorites'}
           </button>
         </div>
 

@@ -1,21 +1,21 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('My Recipes', () => {
+test.describe('My Favorites', () => {
   test.beforeEach(async ({ page }) => {
     // Clear localStorage before each test
     await page.goto('/')
     await page.evaluate(() => localStorage.clear())
   })
 
-  test('shows empty state when no recipes saved', async ({ page }) => {
-    await page.goto('/my-recipes')
+  test('shows empty state when no favorites saved', async ({ page }) => {
+    await page.goto('/my-favorites')
     await expect(page.getByText('The Freezer Door')).toBeVisible()
-    await expect(page.getByText("You haven't saved any recipes yet.")).toBeVisible()
+    await expect(page.getByText("You haven't saved any favorites yet.")).toBeVisible()
     await expect(page.getByRole('link', { name: 'Build Your First Drink' })).toBeVisible()
   })
 
   test('can navigate to build page from empty state', async ({ page }) => {
-    await page.goto('/my-recipes')
+    await page.goto('/my-favorites')
     await page.getByRole('link', { name: 'Build Your First Drink' }).click()
     await expect(page).toHaveURL('/build')
   })
@@ -35,10 +35,10 @@ test.describe('My Recipes', () => {
         targetABV: 24,
         createdAt: new Date().toISOString()
       }
-      localStorage.setItem('freezer_door_recipes', JSON.stringify([recipe]))
+      localStorage.setItem('freezer_door_favorites', JSON.stringify([recipe]))
     })
 
-    await page.goto('/my-recipes')
+    await page.goto('/my-favorites')
 
     // Recipe card should be visible
     await expect(page.locator('.recipe-card')).toBeVisible()
@@ -63,10 +63,10 @@ test.describe('My Recipes', () => {
         targetABV: 24,
         createdAt: new Date().toISOString()
       }
-      localStorage.setItem('freezer_door_recipes', JSON.stringify([recipe]))
+      localStorage.setItem('freezer_door_favorites', JSON.stringify([recipe]))
     })
 
-    await page.goto('/my-recipes')
+    await page.goto('/my-favorites')
 
     // Should show ingredient types
     await expect(page.getByText('Gin')).toBeVisible()
@@ -87,10 +87,10 @@ test.describe('My Recipes', () => {
         targetABV: 24,
         createdAt: new Date().toISOString()
       }
-      localStorage.setItem('freezer_door_recipes', JSON.stringify([recipe]))
+      localStorage.setItem('freezer_door_favorites', JSON.stringify([recipe]))
     })
 
-    await page.goto('/my-recipes')
+    await page.goto('/my-favorites')
     await page.getByRole('link', { name: 'Edit' }).click()
 
     await expect(page).toHaveURL('/build/test_recipe_edit')
@@ -113,10 +113,10 @@ test.describe('My Recipes', () => {
         targetABV: 24,
         createdAt: new Date().toISOString()
       }
-      localStorage.setItem('freezer_door_recipes', JSON.stringify([recipe]))
+      localStorage.setItem('freezer_door_favorites', JSON.stringify([recipe]))
     })
 
-    await page.goto('/my-recipes')
+    await page.goto('/my-favorites')
     await expect(page.getByText('Delete Me')).toBeVisible()
 
     // Handle the confirmation dialog
@@ -127,7 +127,7 @@ test.describe('My Recipes', () => {
 
     // Recipe should be gone
     await expect(page.getByText('Delete Me')).not.toBeVisible()
-    await expect(page.getByText("You haven't saved any recipes yet.")).toBeVisible()
+    await expect(page.getByText("You haven't saved any favorites yet.")).toBeVisible()
   })
 
   test('has create new recipe link', async ({ page }) => {
@@ -144,17 +144,17 @@ test.describe('My Recipes', () => {
         targetABV: 24,
         createdAt: new Date().toISOString()
       }
-      localStorage.setItem('freezer_door_recipes', JSON.stringify([recipe]))
+      localStorage.setItem('freezer_door_favorites', JSON.stringify([recipe]))
     })
 
-    await page.goto('/my-recipes')
+    await page.goto('/my-favorites')
     await expect(page.getByRole('link', { name: 'Create New Recipe' })).toBeVisible()
   })
 
-  test('can access my recipes from homepage', async ({ page }) => {
+  test('can access my favorites from homepage', async ({ page }) => {
     await page.goto('/')
-    await page.getByRole('link', { name: 'My Recipes' }).click()
-    await expect(page).toHaveURL('/my-recipes')
+    await page.getByRole('link', { name: 'My Favorites' }).click()
+    await expect(page).toHaveURL('/my-favorites')
   })
 
   test('can access build from homepage', async ({ page }) => {

@@ -4,6 +4,7 @@ import Calculator from './components/Calculator/Calculator';
 import FreezerBarBasics from './components/FreezerBarBasics/FreezerBarBasics';
 import DrinkBuilder from './components/DrinkBuilder/DrinkBuilder';
 import MyRecipes from './components/MyRecipes/MyRecipes';
+import FavoriteView from './components/FavoriteView/FavoriteView';
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <Route path="/basics" element={<FreezerBarBasics />} />
       <Route path="/build" element={<DrinkBuilder />} />
       <Route path="/build/:recipeId" element={<DrinkBuilder />} />
-      <Route path="/my-recipes" element={<MyRecipes />} />
+      <Route path="/my-favorites" element={<MyRecipes />} />
+      <Route path="/favorite/:favoriteId" element={<FavoriteView />} />
     </Routes>
   );
 }

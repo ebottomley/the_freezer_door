@@ -1,4 +1,19 @@
-const STORAGE_KEY = 'freezer_door_recipes';
+const STORAGE_KEY = 'freezer_door_favorites';
+const OLD_STORAGE_KEY = 'freezer_door_recipes';
+
+// Migrate old data on first load
+(function migrateOldData() {
+  try {
+    const oldData = localStorage.getItem(OLD_STORAGE_KEY);
+    const newData = localStorage.getItem(STORAGE_KEY);
+    if (oldData && !newData) {
+      localStorage.setItem(STORAGE_KEY, oldData);
+      localStorage.removeItem(OLD_STORAGE_KEY);
+    }
+  } catch (e) {
+    // Ignore migration errors
+  }
+})();
 
 /**
  * Get all saved recipes from localStorage
@@ -123,6 +138,75 @@ export function validateRecipe(recipe) {
   }
 
   return { valid: true };
+}
+
+/**
+ * Update an existing favorite by ID (without validation)
+ * @param {Object} favorite - The updated favorite object with id
+ * @returns {Object} The updated favorite
+ */
+export function updateFavorite(favorite) {
+  if (!favorite.id) {
+    throw new Error('Favorite ID is required');
+  }
+
+  const favorites = getRecipes();
+  const index = favorites.findIndex(f => f.id === favorite.id);
+
+  if (index === -1) {
+    throw new Error('Favorite not found');
+  }
+
+  favorites[index] = { ...favorite, updatedAt: new Date().toISOString() };
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+    return favorites[index];
+  } catch (error) {
+    console.error('Error updating favorite:', error);
+    throw new Error('Failed to update favorite');
+  }
+}
+
+/**
+ * Save a favorite from Calculator results (standard cocktails)
+ * @param {Object} params - Parameters for the favorite
+ * @param {string} params.cocktailId - Cocktail ID (e.g., 'martini')
+ * @param {string} params.variationId - Variation ID (e.g., 'classic')
+ * @param {Object} params.spirits - Selected spirit brands
+ * @param {Object} params.results - Calculated results from API
+ * @param {number} params.targetABV - Target ABV
+ * @param {number} params.volume - Target volume
+ * @param {string} params.unit - Unit ('oz' or 'ml')
+ * @returns {Object} The saved favorite
+ */
+export function saveFavoriteFromCalculator({ cocktailId, variationId, spirits, results, targetABV, volume, unit, numDrinks }) {
+  const favorites = getRecipes();
+
+  const favorite = {
+    id: generateId(),
+    type: 'standard', // Distinguishes from custom recipes
+    name: results.cocktail_name,
+    cocktailId,
+    variationId,
+    spirits,
+    targetABV,
+    volume,
+    unit,
+    numDrinks,
+    results, // Store the full results for viewing later
+    createdAt: new Date().toISOString()
+  };
+
+  favorites.push(favorite);
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+    return favorite;
+  } catch (error) {
+    console.error('Error saving favorite to localStorage:', error);
+    throw new Error('Failed to save favorite');
+  }
 }
 
 /**
