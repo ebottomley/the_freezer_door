@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../Header/Header';
 import CocktailCard from '../CocktailCard/CocktailCard';
 import { getCocktails } from '../../services/api';
@@ -60,6 +61,9 @@ function HomePage() {
             ))}
           </div>
         </div>
+        <Link to="/basics" className="basics-link">
+          Learn Freezer Bar Basics
+        </Link>
       </main>
     </div>
   );

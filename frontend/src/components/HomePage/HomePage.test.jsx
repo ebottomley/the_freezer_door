@@ -115,7 +115,39 @@ describe('HomePage', () => {
 
     await waitFor(() => {
       const links = screen.getAllByRole('link');
-      expect(links.length).toBe(4);
+      // 4 cocktail cards + 1 basics link
+      expect(links.length).toBe(5);
+    });
+  });
+
+  it('renders Learn Freezer Bar Basics link', async () => {
+    global.fetch.mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockCocktails),
+      })
+    );
+
+    renderWithRouter(<HomePage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Learn Freezer Bar Basics')).toBeInTheDocument();
+    });
+  });
+
+  it('Learn Freezer Bar Basics link has correct href', async () => {
+    global.fetch.mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve(mockCocktails),
+      })
+    );
+
+    renderWithRouter(<HomePage />);
+
+    await waitFor(() => {
+      const basicsLink = screen.getByText('Learn Freezer Bar Basics');
+      expect(basicsLink).toHaveAttribute('href', '/basics');
     });
   });
 });
