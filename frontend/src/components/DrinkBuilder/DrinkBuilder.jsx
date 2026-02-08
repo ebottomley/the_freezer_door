@@ -65,16 +65,24 @@ export default function DrinkBuilder() {
     loadData();
   }, [recipeId]);
 
-  // Calculate total parts from valid ingredients
+  // Check if an ingredient is measured in dashes (bitters)
+  const isBitters = (ingredient) => {
+    if (!ingredient.category || !ingredientCategories[ingredient.category]) {
+      return false;
+    }
+    return ingredientCategories[ingredient.category].measurement_unit === 'dashes';
+  };
+
+  // Calculate total parts from valid ingredients (excluding bitters/dashes)
   const getTotalParts = () => {
     return ingredients
-      .filter(ing => ing.type && ing.parts > 0)
+      .filter(ing => ing.type && ing.parts > 0 && !isBitters(ing))
       .reduce((sum, ing) => sum + ing.parts, 0);
   };
 
-  // Calculate initial ABV (weighted average)
+  // Calculate initial ABV (weighted average, excluding bitters due to negligible volume)
   const getInitialABV = () => {
-    const validIngredients = ingredients.filter(ing => ing.type && ing.parts > 0);
+    const validIngredients = ingredients.filter(ing => ing.type && ing.parts > 0 && !isBitters(ing));
     const totalParts = getTotalParts();
     if (totalParts === 0) return 0;
 

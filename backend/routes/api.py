@@ -227,36 +227,87 @@ def calculate_custom(data):
     if not ingredients or len(ingredients) == 0:
         return jsonify({"error": "At least one ingredient is required"}), 400
 
-    # Build recipe_ingredients and spirit_abvs from the ingredients array
+    # Load ingredient categories to identify bitters (measured in dashes)
+    categories = load_ingredient_categories()
+    bitters_types = set()
+    for cat_id, cat in categories.items():
+        if cat.get('measurement_unit') == 'dashes':
+            bitters_types.update(cat.get('types', []))
+
+    # Separate bitters from regular ingredients
     recipe_ingredients = {}
     spirit_abvs = {}
     spirit_brands = {}
+    bitters_ingredients = {}  # dashes amounts
+    bitters_abvs = {}
+    bitters_brands = {}
 
     for ing in ingredients:
         if 'type' not in ing or 'parts' not in ing:
             return jsonify({"error": "Each ingredient must have type and parts"}), 400
 
         ing_type = ing['type']
-        parts = float(ing['parts'])
+        amount = float(ing['parts'])
 
         # Handle multiple ingredients of same type by creating unique keys
         key = ing_type
         counter = 1
-        while key in recipe_ingredients:
-            counter += 1
-            key = f"{ing_type}_{counter}"
 
-        recipe_ingredients[key] = parts
-        spirit_abvs[key] = float(ing.get('abv', 0))
-        spirit_brands[key] = ing.get('brand', 'Custom')
+        if ing_type in bitters_types:
+            # This is a bitters ingredient (measured in dashes)
+            while key in bitters_ingredients:
+                counter += 1
+                key = f"{ing_type}_{counter}"
+            bitters_ingredients[key] = amount  # dashes
+            bitters_abvs[key] = float(ing.get('abv', 0))
+            bitters_brands[key] = ing.get('brand', 'Custom')
+        else:
+            # Regular ingredient (measured in parts/oz)
+            while key in recipe_ingredients:
+                counter += 1
+                key = f"{ing_type}_{counter}"
+            recipe_ingredients[key] = amount
+            spirit_abvs[key] = float(ing.get('abv', 0))
+            spirit_brands[key] = ing.get('brand', 'Custom')
 
-    # Calculate recipe using existing function
+    # If only bitters and no regular ingredients, handle specially
+    if not recipe_ingredients and bitters_ingredients:
+        return jsonify({"error": "Recipe must contain at least one non-bitters ingredient"}), 400
+
+    # Calculate recipe using existing function (without bitters)
     result = calculate_recipe(
         recipe_ingredients,
         spirit_abvs,
         data['target_volume_ml'],
         data['target_abv']
     )
+
+    # Calculate the scale factor used for regular ingredients
+    total_parts = sum(recipe_ingredients.values())
+    if total_parts > 0:
+        # Determine how much 1 part scales to in ml
+        first_ingredient = list(recipe_ingredients.keys())[0]
+        first_parts = recipe_ingredients[first_ingredient]
+        first_ml = result['ingredients'][first_ingredient]
+        scale_factor = first_ml / first_parts if first_parts > 0 else 0
+    else:
+        scale_factor = 0
+
+    # Add bitters to the result
+    # 1 dash ≈ 1 ml, scale by the same factor as other ingredients
+    # But dashes should be per-drink, so multiply by (target_volume / serving_size)
+    # Actually, simpler: scale dashes the same way parts are scaled
+    ML_PER_DASH = 1.0  # 1 dash ≈ 1 ml
+
+    for key, dashes in bitters_ingredients.items():
+        # Scale dashes to ml based on the recipe scaling
+        bitters_ml = round(dashes * ML_PER_DASH * scale_factor / 29.5735, 1)  # Adjust for oz-to-ml since parts are in oz
+        result['ingredients'][key] = bitters_ml
+        spirit_brands[key] = bitters_brands[key]
+
+    # Recalculate total volume including bitters
+    total_ingredients_ml = sum(result['ingredients'].values())
+    result['total_volume_ml'] = round(total_ingredients_ml + result['water_ml'], 1)
 
     # Add oz conversions
     result['ingredients_oz'] = {
