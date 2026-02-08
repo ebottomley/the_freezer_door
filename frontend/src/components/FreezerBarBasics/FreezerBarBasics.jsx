@@ -23,9 +23,9 @@ function FreezerBarBasics() {
               <strong>Rule of thumb:</strong> If it's boozy and shelf-stable, throw it in the freezer.
             </p>
 
-            <div className="tip-box">
+            <div className="success-box">
               <h4>Best Choices</h4>
-              <p><strong>Spirit-forward, shelf-stable drinks:</strong> Martini, Manhattan, Negroni, Old Fashioned</p>
+              <p><strong>Spirit-forward, shelf-stable drinks:</strong> Martini, Manhattan, Negroni, Old Fashioned (and variants).</p>
             </div>
             <div className="warning-box">
               <h4>Worst Choices</h4>
@@ -92,7 +92,7 @@ function FreezerBarBasics() {
           <section id="dilution" className="basics-section">
             <h2>The Importance of Dilution</h2>
             <p>
-              When you stir a cocktail over ice, water naturally enters the drink — typically <strong>15-25%</strong> of the total volume. This dilution is essential: it softens alcohol's harshness and integrates flavors.
+              When you stir a cocktail over ice, water naturally enters the drink — typically <strong>15-30%+</strong> of the total volume. This dilution is essential: it softens alcohol's harshness and integrates flavors.
             </p>
             <p>
               Freezer cocktails skip the stirring step, so you must <strong>pre-dilute with water</strong> to achieve the same balance.
@@ -102,7 +102,7 @@ function FreezerBarBasics() {
               <li><strong>More dilution</strong> = lower ABV = may become slushy</li>
             </ul>
             <p className="tip-box">
-              Use filtered or distilled water for subtle cocktails like the Martini. Start with less dilution than a stirred drink — you can always add more.
+              Use filtered or distilled water for subtle cocktails like the Martini. If you are uncertain about your preferred ABV, start with less dilution than a stirred drink — you can always add more later.
             </p>
           </section>
 
@@ -123,7 +123,7 @@ function FreezerBarBasics() {
               <li>Multiply ingredients by 6 to fill a standard <strong>750ml bottle</strong></li>
               <li>Leave a couple ounces of headspace for expansion</li>
               <li>Use proper bottles: phenolic screw caps, swing tops, or synthetic corks</li>
-              <li className="warning-box">Avoid metal screw caps (can corrode or stick at freezer temps)</li>
+              <li>Avoid metal screw caps (can corrode or stick at freezer temps)</li>
             </ul>
             <p className="tip-box">
               Cocktails can be stored for weeks to months; some say up to a year!
@@ -134,16 +134,24 @@ function FreezerBarBasics() {
             <h2>Sources</h2>
             <ul className="sources-list">
               <li>
-                <strong>Death & Co Market</strong> — "The Freezer Bar: Basics and Beyond"
+                <a href="https://www.deathandcompanymarket.com/blogs/articles/the-freezer-bar-basics-and-beyond" target="_blank" rel="noopener noreferrer">
+                  <strong>Death & Co Market</strong> — "The Freezer Bar: Basics and Beyond"
+                </a>
               </li>
               <li>
-                <strong>Punch Drink</strong> — "How to Batch and Freeze Martinis, Negronis and Other Cocktails"
+                <a href="https://punchdrink.com/articles/how-to-batch-and-freeze-martinis-negronis-and-other-cocktails/" target="_blank" rel="noopener noreferrer">
+                  <strong>Punch Drink</strong> — "How to Batch and Freeze Martinis, Negronis and Other Cocktails"
+                </a>
               </li>
               <li>
-                <strong>Imbibe Magazine</strong> — "The Do's and Don'ts of Freezer Door Cocktails"
+                <a href="https://imbibemagazine.com/recipe/freezer-door-cocktails/" target="_blank" rel="noopener noreferrer">
+                  <strong>Imbibe Magazine</strong> — "The Do's and Don'ts of Freezer Door Cocktails"
+                </a>
               </li>
               <li>
-                <strong>Jeffrey Morgenthaler</strong> — "Save Your Leftover Batched Cocktails"
+                <a href="https://jeffreymorgenthaler.com/save-your-leftover-batched-cocktails/" target="_blank" rel="noopener noreferrer">
+                  <strong>Jeffrey Morgenthaler</strong> — "Save Your Leftover Batched Cocktails"
+                </a>
               </li>
             </ul>
           </section>

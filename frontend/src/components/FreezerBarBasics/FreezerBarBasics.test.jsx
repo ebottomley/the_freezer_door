@@ -37,7 +37,7 @@ describe('FreezerBarBasics', () => {
   it('renders the dilution section', () => {
     renderWithRouter(<FreezerBarBasics />);
     expect(screen.getByRole('heading', { name: /The Importance of Dilution/i })).toBeInTheDocument();
-    expect(screen.getByText(/15-25%/i)).toBeInTheDocument();
+    expect(screen.getByText(/15-30%/i)).toBeInTheDocument();
   });
 
   it('renders the best cocktails section', () => {
