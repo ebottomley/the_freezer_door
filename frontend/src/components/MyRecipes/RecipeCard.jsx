@@ -1,36 +1,5 @@
 import { Link } from 'react-router-dom';
-
-const TYPE_LABELS = {
-  vodka: 'Vodka',
-  gin: 'Gin',
-  bourbon: 'Bourbon',
-  rye: 'Rye Whiskey',
-  tequila: 'Tequila',
-  mezcal: 'Mezcal',
-  orange_liqueur: 'Orange Liqueur',
-  campari: 'Campari',
-  amaro: 'Amaro',
-  suze: 'Suze',
-  herbal_liqueur: 'Herbal Liqueur',
-  coffee_liqueur: 'Coffee Liqueur',
-  vermouth_dry: 'Dry Vermouth',
-  vermouth_sweet: 'Sweet Vermouth',
-  lillet_blanc: 'Lillet Blanc',
-  angostura: 'Angostura Bitters',
-  peychauds: "Peychaud's Bitters",
-  orange_bitters: 'Orange Bitters',
-  simple_syrup: 'Simple Syrup',
-  agave_nectar: 'Agave Nectar',
-  honey_syrup: 'Honey Syrup',
-  demerara_syrup: 'Demerara Syrup',
-  lime_juice: 'Lime Juice',
-  lemon_juice: 'Lemon Juice',
-  grapefruit_juice: 'Grapefruit Juice',
-  orange_juice: 'Orange Juice',
-  olive_brine: 'Olive Brine',
-  cream: 'Cream',
-  egg_white: 'Egg White'
-};
+import { getSpiritLabel } from '../../constants/spiritLabels';
 
 export default function RecipeCard({ recipe, onDelete }) {
   // Handle both custom recipes (with ingredients array) and standard favorites (with results)
@@ -44,14 +13,14 @@ export default function RecipeCard({ recipe, onDelete }) {
     const ingredientKeys = Object.keys(recipe.results.ingredients);
     ingredientSummary = ingredientKeys
       .slice(0, 3)
-      .map(key => TYPE_LABELS[key] || key.replace(/_/g, ' '))
+      .map(key => getSpiritLabel(key))
       .join(', ');
     moreCount = ingredientKeys.length - 3;
   } else if (recipe.ingredients) {
     // Custom recipes have ingredients array
     ingredientSummary = recipe.ingredients
       .filter(ing => ing.type)
-      .map(ing => TYPE_LABELS[ing.type] || ing.type)
+      .map(ing => getSpiritLabel(ing.type))
       .slice(0, 3)
       .join(', ');
     moreCount = recipe.ingredients.filter(ing => ing.type).length - 3;

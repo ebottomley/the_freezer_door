@@ -1,37 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
 import { formatSimplifiedAmount } from '../../utils/simplifyMeasurements';
-
-const SPIRIT_LABELS = {
-  gin: 'Gin',
-  vodka: 'Vodka',
-  bourbon: 'Bourbon',
-  rye: 'Rye Whiskey',
-  vermouth_dry: 'Dry Vermouth',
-  vermouth_sweet: 'Sweet Vermouth',
-  orange_liqueur: 'Orange Liqueur',
-  campari: 'Campari',
-  angostura: 'Angostura Bitters',
-  peychauds: "Peychaud's Bitters",
-  orange_bitters: 'Orange Bitters',
-  simple_syrup: 'Simple Syrup',
-  olive_brine: 'Olive Brine',
-  amaro: 'Amaro',
-  herbal_liqueur: 'Herbal Liqueur',
-  tequila: 'Tequila',
-  mezcal: 'Mezcal',
-  agave_nectar: 'Agave Nectar',
-  suze: 'Suze',
-  lillet_blanc: 'Lillet Blanc',
-  coffee_liqueur: 'Coffee Liqueur',
-  lime_juice: 'Lime Juice',
-  lemon_juice: 'Lemon Juice',
-  grapefruit_juice: 'Grapefruit Juice',
-  orange_juice: 'Orange Juice',
-  honey_syrup: 'Honey Syrup',
-  demerara_syrup: 'Demerara Syrup',
-  cream: 'Cream',
-  egg_white: 'Egg White'
-};
+import { getSpiritLabel } from '../../constants/spiritLabels';
 
 const styles = StyleSheet.create({
   page: {
@@ -179,7 +148,7 @@ function RecipePdfDocument({ results, unit, simplified, numDrinks }) {
             <View key={ingredient} style={styles.ingredientRow}>
               <View>
                 <Text style={styles.ingredientName}>
-                  {SPIRIT_LABELS[ingredient] || ingredient}
+                  {getSpiritLabel(ingredient)}
                 </Text>
                 {results.spirit_brands[ingredient] && (
                   <Text style={styles.ingredientBrand}>

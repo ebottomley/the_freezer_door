@@ -1,36 +1,7 @@
 import { useState, useMemo } from 'react'
 import { formatSimplifiedAmount, simplifyOz, simplifyMl } from '../utils/simplifyMeasurements'
 import { generateRecipePdf } from './PdfExport/RecipePdf'
-
-const SPIRIT_LABELS = {
-  gin: 'Gin',
-  vodka: 'Vodka',
-  bourbon: 'Bourbon',
-  rye: 'Rye Whiskey',
-  vermouth_dry: 'Dry Vermouth',
-  vermouth_sweet: 'Sweet Vermouth',
-  orange_liqueur: 'Orange Liqueur',
-  amaro: 'Amaro',
-  herbal_liqueur: 'Herbal Liqueur',
-  coffee_liqueur: 'Coffee Liqueur',
-  angostura: 'Angostura Bitters',
-  peychauds: "Peychaud's Bitters",
-  orange_bitters: 'Orange Bitters',
-  simple_syrup: 'Simple Syrup',
-  olive_brine: 'Olive Brine',
-  tequila: 'Tequila',
-  mezcal: 'Mezcal',
-  agave_nectar: 'Agave Nectar',
-  lillet_blanc: 'Lillet Blanc',
-  lime_juice: 'Lime Juice',
-  lemon_juice: 'Lemon Juice',
-  grapefruit_juice: 'Grapefruit Juice',
-  orange_juice: 'Orange Juice',
-  honey_syrup: 'Honey Syrup',
-  demerara_syrup: 'Demerara Syrup',
-  cream: 'Cream',
-  egg_white: 'Egg White'
-};
+import { getSpiritLabel } from '../constants/spiritLabels'
 
 export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomRecipe, numDrinks, onSaveToFavorites, showActionButtons, saveButtonText }) {
   const [simplified, setSimplified] = useState(false)
@@ -223,7 +194,7 @@ export default function ResultsDisplay({ results, unit, servingSizeMl, isCustomR
         {Object.entries(ingredients).map(([ingredient, ml]) => (
           <li key={ingredient} className="ingredient-item">
             <div className="ingredient-name">
-              {SPIRIT_LABELS[ingredient] || ingredient.replace(/_\d+$/, '').split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+              {getSpiritLabel(ingredient)}
               {spirit_brands[ingredient] && (
                 <span className="ingredient-brand">{spirit_brands[ingredient]}</span>
               )}
